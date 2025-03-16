@@ -1,0 +1,10 @@
+span{
+    color: #6C737F;
+}
+.icon{
+    border: 1.02px solid #E0E0E9;
+    box-shadow: 0px 18px 30px 0px #4461F21C;;
+}
+.for-icons{
+    @apply icon w-[4.0625rem] h-16 rounded-2xl p-5 gap-[.6406rem] text-white;
+}

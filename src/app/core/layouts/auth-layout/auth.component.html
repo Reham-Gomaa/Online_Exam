@@ -1,0 +1,43 @@
+<section class="grid grid-cols-1 lg:grid-cols-2 h-screen">
+    <div class="left pt-20 ps-20 pe-[9.1875rem] pb-[10.7756rem] gap-20 hidden lg:block light-bg rounded-tr-[6.25rem] rounded-br-[6.25rem]">
+        <div class="w-[30.125rem] ">
+            <div class="w-full">
+                <h1 class="font-bold text-[3.125rem] align-middle leading-[150%]">Welcome to 
+                    <span class="block text-6xl span-color">Elevate</span>
+                </h1>
+                <p class="font-normal text-[1.125rem] leading-10 mt-2">Quidem autem voluptatibus qui quaerat aspernatur architecto natus</p>
+            </div>
+            <div class="mt-20 w-[25.5rem]">
+                <img src="./images/bro.svg" alt="exam">
+            </div>
+        </div>
+    </div>
+    <div class="right pt-20 pe-20">
+        <nav>
+            <div class="w-full">
+                <ul class="flex items-center justify-between py-[.5625rem] font-normal text-xl w-[21.5rem] ms-auto">
+                    <li>
+                        <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto">English <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                        </svg></button>
+                        <div id="dropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 ">
+                            <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownLargeButton">
+                                <li>
+                                <a class="block px-4 py-2 hover:bg-gray-100">Arabic</a>
+                                </li>
+                            </ul>
+                           
+                        </div>
+                    </li>
+                    <li><a routerLink="signin" class="main-color font-bold">Sign in</a></li>
+                    <li><button routerLink="signup" class="register main-color w-[8.0625rem] h-[2.625rem] rounded-[.9375rem] py-[.5625rem] ps-[24.5px] pe-[1.6563rem] gap-[.625rem]">
+                        Register
+                    </button></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="mt-40">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</section>

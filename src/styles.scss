@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+$span-color : #122D9C;
+$light-bg : #F0F4FC;
+$main-color : #4461F2;
+$border-color : #E0E0E9;
+$placeholder : #A1A4A9;
+
+.span-color{
+    color: $span-color;
+}
+.light-bg{
+    background-color: $light-bg;
+}
+.main-color{
+    color: $main-color;
+}
+.main-bg{
+    background-color: $main-color;
+}
+.input-border-color{
+    border-color: $border-color;
+}
+.placeholder{
+    color: $placeholder;
+}
+
+
+body{
+    font-family: "Poppins", sans-serif;
+}
+.auth-inputs{
+  @apply px-[.7431rem] border-[.0619rem] input-border-color placeholder-gray-400 text-sm rounded-lg block w-full;
+}
+.auth-button{
+    @apply w-full h-14 rounded-[1.25rem] p-2 gap-2 main-bg font-normal text-base text-white;
+}

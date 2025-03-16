@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormFooterComponent } from "../../../shared/components/form-footer/form-footer/form-footer.component";
+import { FormFooterComponent } from '../../layouts/auth-layout/components/form-footer/form-footer.component';
 
 @Component({
   selector: 'app-signin',

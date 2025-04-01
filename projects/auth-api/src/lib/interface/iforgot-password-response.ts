@@ -1,5 +1,10 @@
 
 export interface IForgotPasswordResponse {
-    message: string
-    info: string
-  }
+  message: string
+  info: string
+}
+
+
+export interface IForgotPasswordAdaptorResponse {
+  info: string
+}

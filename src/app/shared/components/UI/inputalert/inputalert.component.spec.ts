@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormFooterComponent } from './form-footer.component';
+import { InputalertComponent } from './inputalert.component';
 
-describe('FormFooterComponent', () => {
-  let component: FormFooterComponent;
-  let fixture: ComponentFixture<FormFooterComponent>;
+describe('InputalertComponent', () => {
+  let component: InputalertComponent;
+  let fixture: ComponentFixture<InputalertComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormFooterComponent]
+      imports: [InputalertComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(FormFooterComponent);
+    fixture = TestBed.createComponent(InputalertComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

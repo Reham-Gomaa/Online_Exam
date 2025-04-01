@@ -1,0 +1,14 @@
+<div class="w-[25.625rem] gap-8 mx-auto mb-28">
+    <div class="flex flex-wrap items-center justify-between mt-8">
+        <div class="w-[8.25rem] h-[1px] border"></div>
+        <span class="font-normal text-base text-[form-span-color]">Or Continue with</span>
+        <div class="w-[8.25rem] h-[1px] border"></div>
+    </div>
+    <div class="mt-8 flex flex-wrap items-center justify-between">
+       @for (image of images; track image.id) {
+            <div class="for-icons">
+                <img [src]="image.src" [alt]="image.title" >
+            </div>
+       }
+    </div>
+</div>

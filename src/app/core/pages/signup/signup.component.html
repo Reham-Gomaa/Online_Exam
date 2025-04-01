@@ -2,29 +2,78 @@
     <h2 class="font-bold mb-8">Sign up</h2>
     <form [formGroup]="registerForm" (ngSubmit)="signUp()">
         <div class="mb-8">
-            <input formControlName="firstName" type="text" id="fname" class="auth-inputs" placeholder="First Name" required />
-        </div> 
+            @let firstNameControl = registerForm.get('firstName');
+            <input formControlName="firstName" type="text" id="fname" class="auth-inputs" placeholder="First Name"
+                required />
+            @if(firstNameControl?.errors && firstNameControl?.touched){
+            <app-inputalert>
+                @if(firstNameControl?.getError('required')){ <li>first name is required</li> }
+                @if(firstNameControl?.getError('minlength')){ <li>name must be at least 3 characters</li> }
+            </app-inputalert>
+            }
+        </div>
         <div class="mb-8">
-            <input formControlName="lastName" type="text" id="lname" class="auth-inputs" placeholder="Last Name" required />
-        </div> 
+            @let lastNameControl = registerForm.get('lastName');
+            <input formControlName="lastName" type="text" id="lname" class="auth-inputs" placeholder="Last Name"
+                required />
+            @if(lastNameControl?.errors && lastNameControl?.touched){
+            <app-inputalert>
+                @if(lastNameControl?.getError('required')){ <li>last name is required</li> }
+                @if(lastNameControl?.getError('minlength')){ <li>name must be at least 3 characters</li> }
+            </app-inputalert>
+            }
+        </div>
         <div class="mb-8">
+            @let emailControl = registerForm.get('email');
             <input formControlName="email" type="email" id="email" class="auth-inputs" placeholder="Email" required />
-        </div> 
+            @if(emailControl?.errors && emailControl?.touched){
+            <app-inputalert>
+                @if(emailControl?.getError('required')){ <li>email is required</li> }
+                @if(emailControl?.getError('email')){ <li>email must be a valid email</li> }
+            </app-inputalert>
+            }
+        </div>
         <div class="mb-8 relative">
-            <input formControlName="password" type="password" id="password" class="auth-inputs" placeholder="Password" required />
-            <i class="absolute end-2 top-1"><img src="./images/fluent_eye-20-filled.png" alt="eye icon"></i>
-        </div> 
+            @let passwordControl = registerForm.get('password');
+            <input formControlName="password" [type]="tPassword ? 'password' : 'text'" id="password" class="auth-inputs"
+                placeholder="Password" required />
+            <i (click)="changetype()" class="absolute end-2 top-1 cursor-pointer"><img
+                    src="./images/fluent_eye-20-filled.png" alt="eye icon"></i>
+            @if(passwordControl?.errors && passwordControl?.touched){
+            <app-inputalert>
+                @if(passwordControl?.getError('required')){ <li>password is required</li> }
+                @if(passwordControl?.getError('pattern')){
+                <li class="leading-5">Ensures at least one ( uppercase letter, lowercase letter, digit & special
+                    character )</li>
+                <li class="leading-5">Ensures the password has at least 8 characters</li>
+                }
+            </app-inputalert>
+            }
+        </div>
         <div class="mb-8 relative">
-            <input formControlName="rePassword" type="password" id="repassword" class="auth-inputs" placeholder="Confirm Password" required />
-            <i class="absolute end-2 top-1"><img src="./images/fluent_eye-20-filled.png" alt="eye icon"></i>
-        </div> 
+            @let rePasswordControl = registerForm.get('rePassword');
+            <input formControlName="rePassword" [type]="tPassword ? 'password' : 'text'" id="repassword"
+                class="auth-inputs" placeholder="Confirm Password" required />
+            <i (click)="changetype()" class="absolute end-2 top-1 cursor-pointer"><img
+                    src="./images/fluent_eye-20-filled.png" alt="eye icon"></i>
+            @if(registerForm.errors && rePasswordControl?.touched){
+            <app-inputalert>
+                <li>passwords don't match</li>
+            </app-inputalert>
+            }
+        </div>
         <div class="mb-4">
+            @let phoneControl = registerForm.get('phone');
             <input formControlName="phone" type="tel" id="phone" class="auth-inputs" placeholder="Phone" required />
-        </div> 
-        <p class="font-medium mb-10 text-center">Already have an account? <span class="main-color">Login</span></p>
-        <button class="auth-button">Create Account</button>
+            @if(phoneControl?.errors && phoneControl?.touched){
+            <app-inputalert>
+                @if(phoneControl?.getError('required')){ <li>phone is required</li> }
+                @if(phoneControl?.getError('pattern')){ <li>phone must be egyptian</li> }
+            </app-inputalert>
+            }
+        </div>
+        <p class="font-medium mb-10 text-center">Already have an account? <span routerLink="/signin"
+                class="main-color cursor-pointer">Login</span></p>
+        <app-formbutton>Create Account</app-formbutton>
     </form>
-    <div>
-        <app-form-footer></app-form-footer>
-    </div>
 </section>

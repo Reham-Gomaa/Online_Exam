@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input, InputSignal } from '@angular/core';
 
 @Component({
   selector: 'app-formbutton',
@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './formbutton.component.scss'
 })
 export class FormbuttonComponent {
-
+  text :InputSignal<string> = input('');
 }

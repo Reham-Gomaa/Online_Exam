@@ -1,14 +1,14 @@
-import { Component , OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, signal, WritableSignal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AuthApiService } from 'auth-api';
 import { jwtDecode } from 'jwt-decode';
-import { assign } from '../../../store/token.action';
-import { IToken } from '../../interfaces/itoken';
 import { Subscription } from 'rxjs';
 import { FormbuttonComponent } from "../../../shared/components/UI/formbutton/formbutton.component";
 import { InputalertComponent } from "../../../shared/components/UI/inputalert/inputalert.component";
+import { assign } from '../../../store/token.action';
+import { IToken } from '../../interfaces/itoken';
 
 @Component({
   selector: 'app-signin',
@@ -17,14 +17,15 @@ import { InputalertComponent } from "../../../shared/components/UI/inputalert/in
   styleUrl: './signin.component.scss'
 })
 export class SigninComponent implements OnDestroy{
-  tPassword :boolean = true;
+
+  private readonly _AuthApiService = inject(AuthApiService);
+  private readonly _Store = inject(Store<{token:IToken}>);
+  private readonly _Router = inject(Router);
+
+  tPassword :WritableSignal<boolean> = signal(true);
   signID !: Subscription;
 
-  constructor ( 
-    private _AuthApiService : AuthApiService ,
-    private _Store : Store<{token:IToken}> ,
-    private _Router : Router
-  ){}
+  constructor (){}
 
   loginForm : FormGroup = new FormGroup({
     email : new FormControl( null , [Validators.required , Validators.email] ),
@@ -52,7 +53,7 @@ export class SigninComponent implements OnDestroy{
   }
 
   changeType(){
-    this.tPassword = !this.tPassword;
+    this.tPassword.update( (value)=> value = !this.tPassword() );
   }
 
   ngOnDestroy(): void {

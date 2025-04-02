@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, signal, WritableSignal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthApiService } from 'auth-api';
@@ -14,13 +14,14 @@ import { InputalertComponent } from "../../../shared/components/UI/inputalert/in
   styleUrl: './forget-password.component.scss'
 })
 export class ForgetPasswordComponent implements OnDestroy{
-  forgotPassID !: Subscription;
-  forgetFlow :number = 1;
 
-  constructor ( 
-    private _AuthApiService : AuthApiService ,
-    private _Router : Router
-  ){}
+  private readonly _AuthApiService = inject(AuthApiService);
+  private readonly _Router = inject(Router);
+
+  forgotPassID !: Subscription;
+  forgetFlow :WritableSignal<number> = signal(1);
+
+  constructor (){}
 
   forgotPasswordForm :FormGroup = new FormGroup({
     email : new FormControl(null , [ Validators.required , Validators.email ])
@@ -30,7 +31,7 @@ export class ForgetPasswordComponent implements OnDestroy{
     this.forgotPassID = this._AuthApiService.ForgotPassword(this.forgotPasswordForm.value).subscribe({
       next: (res)=>{
         sessionStorage.setItem('email' , this.forgotPasswordForm.get('email')?.value);
-        this.forgetFlow = 2
+        this.forgetFlow.update( (value)=> value = 2 );
       }
     })
   }

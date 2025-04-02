@@ -35,7 +35,7 @@
         </div>
         <div class="mb-8 relative">
             @let passwordControl = registerForm.get('password');
-            <input formControlName="password" [type]="tPassword ? 'password' : 'text'" id="password" class="auth-inputs"
+            <input formControlName="password" [type]="tPassword() ? 'password' : 'text'" id="password" class="auth-inputs"
                 placeholder="Password" required />
             <i (click)="changetype()" class="absolute end-2 top-1 cursor-pointer"><img
                     src="./images/fluent_eye-20-filled.png" alt="eye icon"></i>
@@ -52,7 +52,7 @@
         </div>
         <div class="mb-8 relative">
             @let rePasswordControl = registerForm.get('rePassword');
-            <input formControlName="rePassword" [type]="tPassword ? 'password' : 'text'" id="repassword"
+            <input formControlName="rePassword" [type]="tPassword() ? 'password' : 'text'" id="repassword"
                 class="auth-inputs" placeholder="Confirm Password" required />
             <i (click)="changetype()" class="absolute end-2 top-1 cursor-pointer"><img
                     src="./images/fluent_eye-20-filled.png" alt="eye icon"></i>
@@ -74,6 +74,6 @@
         </div>
         <p class="font-medium mb-10 text-center">Already have an account? <span routerLink="/signin"
                 class="main-color cursor-pointer">Login</span></p>
-        <app-formbutton>Create Account</app-formbutton>
+        <app-formbutton [text]="'Create Account'"></app-formbutton>
     </form>
 </section>

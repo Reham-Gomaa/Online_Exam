@@ -1,6 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Component, inject, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { Component, inject, OnDestroy, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
 import { AuthApiService } from 'auth-api';
 import { Router } from '@angular/router';
 import { FormbuttonComponent } from "../../../shared/components/UI/formbutton/formbutton.component";
@@ -14,13 +14,15 @@ import { InputalertComponent } from "../../../shared/components/UI/inputalert/in
   styleUrl: './set-password.component.scss'
 })
 export class SetPasswordComponent implements OnDestroy {
-  tPassword: boolean = true;
-  email !: string;
-  resetID !: Subscription;
 
   private readonly _AuthApiService = inject(AuthApiService);
   private readonly _Router = inject(Router);
   private readonly _PLATFORM_ID = inject(PLATFORM_ID);
+
+  tPassword: WritableSignal<boolean> = signal(true);
+  email !: string;
+  resetID !: Subscription;
+
 
   resetPasswordForm: FormGroup = new FormGroup({
     newPassword: new FormControl(null, [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)]),
@@ -60,7 +62,7 @@ export class SetPasswordComponent implements OnDestroy {
   }
 
   changeType() {
-    this.tPassword = !this.tPassword;
+    this.tPassword.update( (value)=> value = !this.tPassword );
   }
 
   ngOnDestroy(): void {

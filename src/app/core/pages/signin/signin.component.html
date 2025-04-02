@@ -13,7 +13,7 @@
     </div>
     <div class="mb-4 relative">
       @let passControl = loginForm.get('password');
-      <input formControlName="password" [type]="tPassword ? 'password':'text'" id="password" class="auth-inputs"
+      <input formControlName="password" [type]="tPassword() ? 'password':'text'" id="password" class="auth-inputs"
         placeholder="Password" required />
       <i (click)="changeType()" class="absolute end-2 top-1 cursor-pointer"><img src="./images/fluent_eye-20-filled.png"
           alt="eye icon"></i>
@@ -30,6 +30,6 @@
     </div>
     <p routerLink="/forgetpassword" class="main-color font-normal mb-10 text-right cursor-pointer">Recover Password ?
     </p>
-    <app-formbutton>Sign in</app-formbutton>
+    <app-formbutton [text]="'Sign in'"></app-formbutton>
   </form>
 </section>

@@ -1,35 +1,35 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { Base_Url } from 'auth-api';
 import { catchError, map, Observable, of } from 'rxjs';
 import { AuthApiAdaptorService } from './adaptor/auth-api-adaptor.service';
+import { ForgotPasswordAdaptorService } from './adaptor/forgot-password-adaptor.service';
+import { ResetPasswordAdaptorService } from './adaptor/reset-password-adaptor.service';
+import { VerifyCodeAdaptorService } from './adaptor/verify-code-adaptor.service';
+import { AuthApi } from './base/AuthApi';
 import { AuthEndPoint } from './enums/AuthApi.endPoints';
+import { IForgotPasswordData } from './interface/iforgot-password-data';
+import { IForgotPasswordAdaptorResponse } from './interface/iforgot-password-response';
+import { IResetPassword } from './interface/ireset-password';
+import { ISigninData } from './interface/isignin-data';
 import { ISignupData } from './interface/isignup-data';
 import { AdaptorResponse } from './interface/isignup-response';
-import { AuthApi } from './base/AuthApi';
-import { ISigninData } from './interface/isignin-data';
-import { IForgotPasswordData } from './interface/iforgot-password-data';
-import { IForgotPasswordAdaptorResponse, IForgotPasswordResponse } from './interface/iforgot-password-response';
-import { ForgotPasswordAdaptorService } from './adaptor/forgot-password-adaptor.service';
-import { IResetPassword } from './interface/ireset-password';
-import { Base_Url } from 'auth-api';
-import { VerifyCodeAdaptorService } from './adaptor/verify-code-adaptor.service';
 import { IVerifyCodeRes } from './interface/iverify-code-res';
-import { ResetPasswordAdaptorService } from './adaptor/reset-password-adaptor.service';
 import { ResetPasswordِAdaptorRes } from './interface/reset-password-res';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthApiService implements AuthApi{
-  private readonly _Base_Url = inject(Base_Url)
+  
+  private readonly _Base_Url = inject(Base_Url);
+  private readonly _HttpClient = inject(HttpClient);
+  private readonly _AuthApiAdaptorService = inject(AuthApiAdaptorService);
+  private readonly _ForgotPasswordAdaptorService = inject(ForgotPasswordAdaptorService);
+  private readonly _VerifyCodeAdaptorService = inject(VerifyCodeAdaptorService);
+  private readonly _ResetPasswordAdaptorService = inject(ResetPasswordAdaptorService);
 
-  constructor(
-    private _HttpClient : HttpClient ,
-    private _AuthApiAdaptorService : AuthApiAdaptorService,
-    private _ForgotPasswordAdaptorService : ForgotPasswordAdaptorService,
-    private _VerifyCodeAdaptorService : VerifyCodeAdaptorService,
-    private _ResetPasswordAdaptorService : ResetPasswordAdaptorService
-  ) { }
+  constructor() { }
 
   Signup(data:ISignupData):Observable<AdaptorResponse>{
     return this._HttpClient.post( this._Base_Url+AuthEndPoint.SIGN_UP , data ).pipe(

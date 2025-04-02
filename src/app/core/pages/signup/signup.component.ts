@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, signal, WritableSignal } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { AuthApiService } from 'auth-api';
 import { Router, RouterLink } from '@angular/router';
@@ -13,13 +13,14 @@ import { InputalertComponent } from "../../../shared/components/UI/inputalert/in
   styleUrl: './signup.component.scss'
 })
 export class SignupComponent implements OnDestroy{
-  tPassword :boolean = true;
+
+  private readonly _AuthApiService = inject(AuthApiService);
+  private readonly _Router = inject(Router);
+
+  tPassword :WritableSignal<boolean> = signal(true);
   signupID !: Subscription;
 
-  constructor ( 
-    private _AuthApiService : AuthApiService ,
-    private _Router : Router
-   ){}
+  constructor (){}
 
   registerForm :FormGroup = new FormGroup( {
     username :new FormControl( null ) ,
@@ -54,7 +55,7 @@ export class SignupComponent implements OnDestroy{
   }
 
   changetype(){
-    this.tPassword = !this.tPassword;
+    this.tPassword.update( (value)=> value = !this.tPassword() );
   }
 
   ngOnDestroy(): void {

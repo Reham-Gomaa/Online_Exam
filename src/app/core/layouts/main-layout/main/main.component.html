@@ -1,31 +1,59 @@
-<section class="flex flex-wrap justify-between items-center">
-    <button data-collapse-toggle="side-bar" type="button"
-        class="inline-flex items-center justify-center p-2 w-10 h-10  text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
-        aria-controls="navbar-default" aria-expanded="false">
-        <span class="sr-only">Open main menu</span>
-        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"d="M1 1h15M1 7h15M1 13h15" />
-        </svg>
-    </button>
-    <div id="side-bar" class="hidden w-full  md:w-2/12 md:grid  md:gap-14 p-2">
-        <div class="w-full">
-            <img src="./images/Final Logo 1.png" alt="elevate logo">
+<section class="relative">
+    <section class=" absolute top-10 start-8 grid gap-[4.5rem] lg:grid-cols-6">
+        <div class="lg:hidden">
+            <app-sidebar></app-sidebar>
         </div>
-        <button class="w-[12.0625rem] main-bg rounded-[.625rem] p-2 grid gap-1 grid-cols-2 text-white ">
-            <img src="./images/Vector.png" alt="vector">
-            <span class="span">Dashboard</span>
-        </button>
-        <div class="w-[12.0625rem] p-2 flex justify-between items-center">
-            <img src="./images/ic_twotone-history.png" alt="history">
-            <span class="span history">Quiz History</span>
+        <div class="hidden lg:w-[12.0625rem] h-[19.4375rem] lg:grid gap-14">
+            <div class="w-[9.4375rem] h-[1.8125rem]">
+                <img src="./images/Final Logo 1.png" alt="elevate logo">
+            </div>
+            <div class="w-full h-[124px] grid gap-8">
+                <button routerLink="/dashboard" class="side-button-style main-bg rounded-[.625rem]">
+                    <div class="img-style">
+                        <img src="./images/Vector.png" alt="vector">
+                    </div>
+                    <span class="span text-white">Dashboard</span>
+                </button>
+                <button class="side-button-style">
+                    <div class="img-style">
+                        <img src="./images/ic_twotone-history.png" alt="history">
+                    </div>
+                    <span class="span history">Quiz History</span>
+                </button>
+            </div>
+            <button (click)="logOut()" class="py-2 px-1 grid gap-10 relative">
+                <div class="w-[1.5625rem] h-[1.5625rem] absolute top-[.6563rem] start-[.6563rem]">
+                    <img src="./images/Vector (1).png" alt="log out icon">
+                </div>
+                <span class="span history">Log Out</span>
+            </button>
         </div>
-        <div class="w-[9.375rem] py-2 px-1 grid gap-1 grid-cols-2">
-            <img src="./images/Vector (1).png" alt="">
-            <span class="span history">Log Out</span>
-        </div>
-    </div>
-    <div class=" md:w-9/12 bg-slate-600">
 
-        <router-outlet />
-    </div>
+        <div class="lg:w-[66.4375rem] lg:grid lg:grid-cols-subgrid lg:col-span-5 lg:gap-[2.5625rem]">
+            <div class="hidden  lg:h-[61px] lg:w-[66.375rem] lg:grid lg:grid-cols-subgrid lg:col-span-5 gap-6">
+
+                <div class=" relative w-[47rem] grid col-span-3 gap-[1.625rem] ">
+                    <input type="text"
+                        class="lg:w-[31.25rem] xl:w-[47rem] ps-11 p-4 rounded-[1.25rem] font-normal text-[1.1875rem] align-middle history"
+                        placeholder="Search Quiz">
+                    <div class="w-[1.5625rem] h-[1.5625rem] absolute top-[1.125rem] start-[1.125rem]">
+                        <img src="./images/search.png" alt="search icon">
+                    </div>
+                </div>
+                <button
+                    class="w-[11.9375rem] h-[3.8125rem] rounded-[1.25rem] py-4 px-8 grid gap-2 col-span-1 place-self-end main-bg span text-white">Start
+                    Quiz</button>
+                <div class="user w-[3.8125rem] h-[3.8125rem] rounded-full grid col-span-1 place-self-center main-bg">
+                    <!-- <img src="" alt=""> -->
+                </div>
+
+            </div>
+            <div class="w-full grid lg:gap-10 lg:grid-cols-subgrid lg:col-span-5">
+                <!-- <div class="h-[17.5rem]"></div> -->
+                <div class="router w-[66.4375rem]">
+                    <router-outlet />
+                </div>
+            </div>
+        </div>
+    </section>
 </section>

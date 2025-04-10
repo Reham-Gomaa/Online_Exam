@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Base_Url } from 'auth-api';
 import { catchError, map, Observable, of } from 'rxjs';
 import { AuthApiAdaptorService } from './adaptor/auth-api-adaptor.service';
 import { ForgotPasswordAdaptorService } from './adaptor/forgot-password-adaptor.service';
@@ -16,6 +15,7 @@ import { ISignupData } from './interface/isignup-data';
 import { AdaptorResponse } from './interface/isignup-response';
 import { IVerifyCodeRes } from './interface/iverify-code-res';
 import { ResetPasswordِAdaptorRes } from './interface/reset-password-res';
+import { Base_Url } from './token/BaseUrl.token';
 
 @Injectable({
   providedIn: 'root'

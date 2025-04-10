@@ -1,0 +1,34 @@
+<section class=" round-[1.25rem] py-8 px-4 grid gap-6">
+    <div class="w-full lg:w-[64.4375rem] flex justify-between items-center headerspan">
+        <span class="main-color">Quizes</span>
+        <span #show class="cursor-pointer main-color">View All</span>
+    </div>
+    <div class="w-full lg:w-[64.4375rem] grid lg:grid-cols-3 gap-y-6 gap-x-5">
+     @if (allSubjects != null) {
+        @for (subject of allSubjects.slice(0,6); track subject._id) {
+            <div [routerLink]="[ '/diploma' , subject._id ]" class="icon relative cursor-pointer w-[330px] h-[292px] rounded-lg">
+                <img class="w-full " [src]="subject.icon" [alt]="subject.name">
+                <div class="nameText w-[16.7075rem] h-[4.125rem] rounded-lg absolute bottom-[1.6875rem] start-[1.6875rem]">
+                    <div class="absolute text-white w-[15.375rem] h-[37.88] bottom-[.9375rem] start-[.9375rem]">
+                        <p class="font-bold text-[.8444rem]">{{subject.name}}</p>
+                        <span class="font-medium text-[.6875rem]">Voluptatem aut ut dignissimos blanditiis</span>
+                    </div>
+                </div>
+            </div>
+        }
+        @defer ( on interaction(show) ) {
+            @for (subject of allSubjects.slice(6,8); track subject._id) {
+                <div [routerLink]="[ '/diploma' , subject._id ]" class="icon cursor-pointer relative w-[330px] h-[292px] rounded-lg">
+                    <img class="w-full " [src]="subject.icon" [alt]="subject.name">
+                    <div class="nameText w-[16.7075rem] h-[4.125rem] rounded-lg absolute bottom-[1.6875rem] start-[1.6875rem]">
+                        <div class="absolute text-white w-[15.375rem] h-[37.88] bottom-[.9375rem] start-[.9375rem]">
+                            <p class="font-bold text-[.8444rem]">{{subject.name}}</p>
+                            <span class="font-medium text-[.6875rem]">Voluptatem aut ut dignissimos blanditiis</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+     }
+    </div>
+</section>

@@ -14,17 +14,6 @@ $history: #696F79;
 .img-style{
     @apply w-6 h-6 absolute top-[.6875rem] start-[.6875rem];
 }
-
-::placeholder{
-    position: absolute;
-    left: 4.1875rem;
-    top: 1rem;
-}
-
-.user{
-    box-shadow: 0px 15px 40px 5px #EDEDED;
-}
-
-.router{
-    box-shadow: 0px 15px 40px 0px #0000000D;
+.bBorder{
+    border-bottom: 1px solid #DBDADE
 }

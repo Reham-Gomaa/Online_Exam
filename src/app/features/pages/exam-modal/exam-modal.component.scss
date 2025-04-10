@@ -1,0 +1,27 @@
+$success : #11CE19;
+$input : #EDEFF3;
+$next: #E5E5E5;
+
+.success-color{
+    color: $success;
+}
+.input-bg{
+    background-color: $input;
+}
+.next{
+    background: #E5E5E5;
+}
+
+:host{
+    font-family: "Inter", sans-serif;
+}
+
+.myShadow{
+    box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.25);
+}
+span{
+    font-family: "Roboto", sans-serif;
+}
+#back{
+    border: 1px solid #4461F2
+}

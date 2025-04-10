@@ -1,0 +1,20 @@
+$li-color : #535353;
+
+:host{
+    font-family: "Inter", sans-serif;
+}
+h2{
+    font-family: "Inter", sans-serif;;
+}
+.row{
+    box-shadow: 0px 15px 40px 0px #2A29290D;
+}
+.myShadow{
+    box-shadow: 0px 1px 10px 0px #00000040;
+}
+.li-color{
+    color: $li-color;
+}
+.modal{
+    background: rgba(0, 0, 0, 0.5);
+}

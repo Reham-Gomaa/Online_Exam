@@ -41,3 +41,6 @@ export interface IQuestionsOnExamRes {
 export interface IQuestionsOnExamAdaptorRes {
     questions: Question[]
   }
+
+
+

@@ -1,76 +1,84 @@
 import { Component, inject, input, InputSignal, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
-import { QuestionService } from '../../services/Questions/question.service';
-import { Answer, Question } from '../../interfaces/Questions/iquestions-on-exam-res';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 import { Subscription } from 'rxjs';
-import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
+import { CheckQuestionInterface } from '../../interfaces/Questions/check-question-interface';
+import { Question } from '../../interfaces/Questions/iquestions-on-exam-res';
+import { QuestionService } from '../../services/Questions/question.service';
 
 @Component({
   selector: 'app-exam-modal',
-  imports: [ CarouselModule ],
+  imports: [CarouselModule],
   templateUrl: './exam-modal.component.html',
   styleUrl: './exam-modal.component.scss'
 })
-export class ExamModalComponent implements OnInit , OnDestroy{
+export class ExamModalComponent implements OnInit, OnDestroy {
   private readonly _QuestionService = inject(QuestionService);
 
-  e_id :InputSignal<string> = input('');
-  disabled :WritableSignal<boolean> = signal(true);
+  e_id: InputSignal<string> = input('');
+  disabled: WritableSignal<boolean> = signal(true);
   questionsOnExam !: Question[];
-  index :number = 0;
-  //answers !: Answer[][];
-  questionOnExamID !: Subscription;
-
-  customOptions: OwlOptions = {
-    loop: true,
-    mouseDrag: false,
-    touchDrag: false,
-    pullDrag: false,
-    dots: false,
-    navSpeed: 700,
-    navText: ['', ''],
-    responsive: {
-      0: {
-        items: 1
-      },
-      400: {
-        items: 2
-      },
-      740: {
-        items: 3
-      },
-      940: {
-        items: 4
-      }
-    },
-    nav: true
-  }
+  index: number = 0;
+  answers : CheckQuestionInterface[] = [];
+  minutes !:number;
+  seconds :number = 0;
+  allQuestionsOnExamID !: Subscription;
 
   ngOnInit(): void {
     this.startExam(this.e_id());
+    
+    let intervalId = setInterval(() => {
+      if(this.seconds === 0){
+        this.minutes = this.minutes -1;
+        this.seconds = 60;
+      }else{
+        this.seconds = this.seconds - 1;
+      }
+      if(this.minutes === 0) clearInterval(intervalId)
+  }, 1000)
+
   }
 
-  startExam(e_id:string){
-    this._QuestionService.getAllQuestionsOnExam(e_id).subscribe({
-      next: (res)=>{
+  startExam(e_id: string) {
+    this.allQuestionsOnExamID = this._QuestionService.getAllQuestionsOnExam(e_id).subscribe({
+      next: (res) => {
         this.questionsOnExam = res.questions;
-        //this.answers = res.questions.map( (e)=> e.answers )
+        this.minutes = res.questions[0].exam.duration;
       }
     })
   }
 
-  nextQuestion(){
-    if(this.index < this.questionsOnExam.length){
-      this.index++;
+  selectAnswer(q_id: string, key: string) {
+    let index = this.answers.findIndex((ans) => ans.questionId === q_id);
+    if (index == -1) {
+      this.answers.push({ questionId: q_id, correct: key });
+      localStorage.setItem('answers' , JSON.stringify(this.answers));
+      this.disabled.update( (value)=> value = false );
+    } else {
+      this.answers[index].correct = key;
+      localStorage.setItem('answers' , JSON.stringify(this.answers));
+      this.disabled.update( (value)=> value = false );
     }
   }
-  previousQuestion(){
-    if(this.index > 0){
+
+  isSelected(q_id:string , key: string): boolean {
+    return this.answers.some(answer => answer.questionId === q_id && answer.correct === key);
+  }
+
+  nextQuestion() {
+    if (this.index < this.questionsOnExam.length) {
+      this.index++;
+      this.disabled.update( (value)=> value = true );
+    }
+  }
+  previousQuestion() {
+    if (this.index > 0) {
       this.index--;
     }
   }
 
   ngOnDestroy(): void {
-    this.questionOnExamID?.unsubscribe();
+    this.allQuestionsOnExamID?.unsubscribe();
+    localStorage.clear()
   }
 
 }

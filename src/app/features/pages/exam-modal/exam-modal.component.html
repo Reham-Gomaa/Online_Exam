@@ -1,60 +1,41 @@
 <div class="w-[42.875rem] bg-white rounded-[1.25rem] myShadow p-6 grid gap-12">
     @if(questionsOnExam){
-        <!-- @for(question of questionsOnExam; track question._id){ -->
-            <div class="grid gap-[1.6875rem]">
-                <div class="grid gap-[1.6875rem]">
-                    <div class="flex justify-between items-center">
-                        <!-- FIXME: calculate current number -->
-                        <span class="font-medium text-sm/5 tracking-[.0063rem] main-color text-center align-middle">
-                            Question {{index+1}} of {{questionsOnExam.length}}
-                        </span>
-                        <div class="w-[5.8125rem] px-1 flex justify-center items-center">
-                            <div class="w-6 h-[1.875rem]">
-                                <img src="./images/clock.png" alt="clock">
-                            </div>
-                            <!-- FIXME: calculate time left  -->
-                            <span class="success-color font-normal text-xl/6 tracking-[.0313rem] align-middle text-center">
-                                {{questionsOnExam[index].exam.duration}} min
-                            </span>
-                        </div>
+    <div class="grid gap-[1.6875rem]">
+        <div class="grid gap-[1.6875rem]">
+            <div class="flex justify-between items-center">
+                <span class="font-medium text-sm/5 tracking-[.0063rem] main-color text-center align-middle">
+                    Question {{index+1}} of {{questionsOnExam.length}}
+                </span>
+                <div class="w-[6.125rem] px-1 flex justify-center items-center">
+                    <div class="w-6 h-[1.875rem] align-middle">
+                        <img src="./images/clock.png" alt="clock">
                     </div>
-                    <!-- TODO: dots  -->
-                    <div>dots</div>
-                </div>
-                <div class="grid gap-6">
-                    <h3 class="font-medium text-2xl">{{questionsOnExam[index].question}}</h3>
-                    <div class="grid gap-4">
-                        <div class="cursor-pointer w-full h-[4.5rem] rounded-[.625rem] py-4 px-2 flex items-center input-bg">
-                            <input id="radio-1" type="radio" value="1" name="radio" class="me-1 w-4 h-4 text-blue-600 bg-gray-100 border-blue-500 focus:ring-blue-500">
-                            <label for="radio-1" class="ms-1 font-normal text-xl text-black">{{questionsOnExam[index].answers[0].answer}}</label>
-                        </div>
-                        <div class="cursor-pointer w-full h-[4.5rem] rounded-[.625rem] py-4 px-2 flex items-center input-bg">
-                            <input id="radio-2" type="radio" value="2" name="radio" class="me-1 w-4 h-4 text-blue-600 bg-gray-100 border-blue-500 focus:ring-blue-500">
-                            <label for="radio-2" class="ms-1 font-normal text-xl text-black">{{questionsOnExam[index].answers[1].answer}}</label>
-                        </div>
-                        <div class="cursor-pointer w-full h-[4.5rem] rounded-[.625rem] py-4 px-2 flex items-center input-bg ">
-                            <input id="radio-3" type="radio" value="3" name="radio" class="me-1 w-4 h-4 text-blue-600 bg-gray-100 border-blue-500 focus:ring-blue-500">
-                            <label for="radio-3" class="ms-1 font-normal text-xl text-black">{{questionsOnExam[index].answers[2].answer}}</label>
-                        </div>
-                        <!-- <div class="cursor-pointer w-full h-[4.5rem] rounded-[.625rem] py-4 px-2 flex items-center input-bg">
-                            <input id="radio-4" type="radio" value="4" name="radio" class="me-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
-                            <label for="radio-4" class="ms-1 font-normal text-xl text-black">Answer 4</label>
-                        </div> -->
-                    </div>
-                </div>
-                <div class="h-14 grid gap-12 grid-cols-2">
-                    <button (click)="previousQuestion()" id="back" class="w-[18.4375rem] h-14 rounded-full">Back</button>
-                    <button (click)="nextQuestion()" class="w-[18.4375rem] h-14 rounded-full disabled:[next]">Next</button>
+                    <span class="success-color font-normal text-xl/6 tracking-[.0313rem] align-middle text-center">
+                        {{ minutes }} : {{ seconds }}
+                    </span>
                 </div>
             </div>
-        <!-- } -->
+            <!-- TODO: dots  -->
+            <div>dots</div>
+        </div>
+        <div class="grid gap-6">
+            <h3 class="font-medium text-2xl">{{questionsOnExam[index].question}}</h3>
+            <div class="grid gap-4">
+                @for (answer of questionsOnExam[index].answers; track $index) {
+                <div [class.bg-blue-600]="isSelected(questionsOnExam[index]._id , answer.key)"
+                    (click)="selectAnswer(questionsOnExam[index]._id , answer.key)"
+                    class="cursor-pointer w-full h-[4.5rem] rounded-[.625rem] py-4 px-2 flex items-center input-bg">
+                    <input [id]="index" type="radio" [value]="answer.answer" name="answer"
+                        class="me-1 w-4 h-4 text-blue-600 bg-gray-100 border-blue-500 focus:ring-blue-500">
+                    <label [for]="index" class="ms-1 font-normal text-xl text-black">{{answer.answer}}</label>
+                </div>
+                }
+            </div>
+        </div>
+        <div class="h-14 grid gap-12 grid-cols-2">
+            <button (click)="previousQuestion()" id="back" class="w-[18.4375rem] h-14 rounded-full">Back</button>
+            <button [disabled]="disabled()" (click)="nextQuestion()" class="w-[18.4375rem] h-14 rounded-full main-bg text-white disabled:bg-gray-300 disabled:text-gray-400">Next</button>
+        </div>
+    </div>
     }
 </div>
-
-<!-- <owl-carousel-o [options]="customOptions">
-
-      <ng-template carouselSlide [id]="slide.id">
-        <img [src]="slide.src" [alt]="slide.alt" [title]="slide.title">
-      </ng-template>
-
-  </owl-carousel-o> -->

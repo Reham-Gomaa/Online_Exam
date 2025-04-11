@@ -1,4 +1,5 @@
 <section class="w-[66.4375rem]">
+   @if (examsOnSub) {
     <div class="grid gap-6 ">
         <!-- FIXME: display subject  -->
         <h2 class="font-medium text-lg">Front-End Quiz</h2>
@@ -41,5 +42,6 @@
         </div>
         <app-exam-modal [e_id]="exam_id()" [class.hidden]="start() == false"></app-exam-modal>
     </div>
+   }
 
 </section>

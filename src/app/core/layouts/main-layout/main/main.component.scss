@@ -4,15 +4,16 @@ $history: #696F79;
     color:$history;
 }
 
-.span{
-    @apply font-semibold text-xl align-middle;
+.btnspan{
+    @apply font-semibold lg:text-xl align-middle;
 }
 .side-button-style{
-    @apply h-[2.875rem] p-2 grid gap-8 relative;
+    @apply h-[2.875rem] flex justify-between items-center  p-2;
+    // grid gap-8
 }
 
 .img-style{
-    @apply w-6 h-6 absolute top-[.6875rem] start-[.6875rem];
+    @apply w-6 h-6 ;
 }
 
 ::placeholder{

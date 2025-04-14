@@ -19,6 +19,8 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   questionsOnExam !: Question[];
   index: number = 0;
   answers : CheckQuestionInterface[] = [];
+  duration !:number;
+  time !:number;
   minutes !:number;
   seconds :number = 0;
   allQuestionsOnExamID !: Subscription;
@@ -28,7 +30,7 @@ export class ExamModalComponent implements OnInit, OnDestroy {
     
     let intervalId = setInterval(() => {
       if(this.seconds === 0){
-        this.minutes = this.minutes -1;
+        this.minutes = this.duration -1;
         this.seconds = 60;
       }else{
         this.seconds = this.seconds - 1;
@@ -42,7 +44,7 @@ export class ExamModalComponent implements OnInit, OnDestroy {
     this.allQuestionsOnExamID = this._QuestionService.getAllQuestionsOnExam(e_id).subscribe({
       next: (res) => {
         this.questionsOnExam = res.questions;
-        this.minutes = res.questions[0].exam.duration;
+        this.duration = res.questions[0].exam.duration;
       }
     })
   }
@@ -51,11 +53,11 @@ export class ExamModalComponent implements OnInit, OnDestroy {
     let index = this.answers.findIndex((ans) => ans.questionId === q_id);
     if (index == -1) {
       this.answers.push({ questionId: q_id, correct: key });
-      localStorage.setItem('answers' , JSON.stringify(this.answers));
+      //sessionStorage.setItem('answers' , JSON.stringify(this.answers));
       this.disabled.update( (value)=> value = false );
     } else {
       this.answers[index].correct = key;
-      localStorage.setItem('answers' , JSON.stringify(this.answers));
+      //sessionStorage.setItem('answers' , JSON.stringify(this.answers));
       this.disabled.update( (value)=> value = false );
     }
   }
@@ -65,9 +67,15 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   }
 
   nextQuestion() {
-    if (this.index < this.questionsOnExam.length) {
+    if (this.index < this.questionsOnExam.length -1) {
       this.index++;
       this.disabled.update( (value)=> value = true );
+    }else{
+      this._QuestionService.checkQuestions({ answers: this.answers , time: 10 }).subscribe({
+        next: (res)=>{
+          console.log(res)
+        }
+      })
     }
   }
   previousQuestion() {
@@ -78,7 +86,7 @@ export class ExamModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.allQuestionsOnExamID?.unsubscribe();
-    localStorage.clear()
+    //sessionStorage.clear()
   }
 
 }

@@ -22,4 +22,9 @@ export class QuestionService implements QuestionApi {
       map( (res:any)=> this._QuestionOnExamAdaptorService.adapt(res) )
     )
   }
+
+  checkQuestions(data:any):Observable<any>{
+    return this._HttpClient.post( this._Base_Url + QuestionEndpoint.CHECK_QUESTIONS , data );
+  }
+
 }

@@ -25,7 +25,8 @@
                 <div [class.bg-blue-600]="isSelected(questionsOnExam[index]._id , answer.key)"
                     (click)="selectAnswer(questionsOnExam[index]._id , answer.key)"
                     class="cursor-pointer w-full h-[4.5rem] rounded-[.625rem] py-4 px-2 flex items-center input-bg">
-                    <input [id]="index" type="radio" [value]="answer.answer" name="answer"
+                    <input [id]="index" [type]="questionsOnExam[index].type == 'single_choice' ? 'radio' : 'checkbox' "
+                        [value]="answer.answer" name="answer"
                         class="me-1 w-4 h-4 text-blue-600 bg-gray-100 border-blue-500 focus:ring-blue-500">
                     <label [for]="index" class="ms-1 font-normal text-xl text-black">{{answer.answer}}</label>
                 </div>
@@ -34,7 +35,11 @@
         </div>
         <div class="h-14 grid gap-12 grid-cols-2">
             <button (click)="previousQuestion()" id="back" class="w-[18.4375rem] h-14 rounded-full">Back</button>
-            <button [disabled]="disabled()" (click)="nextQuestion()" class="w-[18.4375rem] h-14 rounded-full main-bg text-white disabled:bg-gray-300 disabled:text-gray-400">Next</button>
+            <button [disabled]="disabled()" (click)="nextQuestion()"
+                class="w-[18.4375rem] h-14 rounded-full main-bg text-white disabled:bg-gray-300 disabled:text-gray-400">
+               @if (index == questionsOnExam.length -1) {Submit}
+               @else  {Next}
+            </button>
         </div>
     </div>
     }

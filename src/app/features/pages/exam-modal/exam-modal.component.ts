@@ -1,5 +1,4 @@
 import { Component, inject, input, InputSignal, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Chart, registerables } from 'chart.js';
 import { Subscription } from 'rxjs';
 import { Answer, ScoreAdaptorRes } from '../../interfaces/Questions/check-question-interface';
@@ -9,7 +8,7 @@ Chart.register(...registerables);
 
 @Component({
   selector: 'app-exam-modal',
-  imports: [ BrowserAnimationsModule ],
+  imports: [  ],
   templateUrl: './exam-modal.component.html',
   styleUrl: './exam-modal.component.scss'
 })
@@ -31,6 +30,7 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   chart:any;
   data:any;
   config:any;
+  total!:number;
 
   ngOnInit(): void {
     this.startExam(this.e_id());
@@ -85,7 +85,6 @@ export class ExamModalComponent implements OnInit, OnDestroy {
     }else{
       this.submit();
       this.showScore.update( (value)=> value = true );
-      this.chart = new Chart('myScore' , this.config);
     }
   }
   previousQuestion() {
@@ -108,8 +107,8 @@ export class ExamModalComponent implements OnInit, OnDestroy {
               label: 'score',
               data: [this.score.correct, this.score.wrong],
               backgroundColor: [
-                '#02369C',
-                '#CC1010'
+                'rgb(2, 54, 156)',
+                'rgb(204, 16, 16)'
               ],
               hoverOffset: 4
             }]
@@ -118,6 +117,7 @@ export class ExamModalComponent implements OnInit, OnDestroy {
             type: 'doughnut',
             data: this.data,
           };
+          this.chart = new Chart('myScore' , this.config);
         }
       })
   }

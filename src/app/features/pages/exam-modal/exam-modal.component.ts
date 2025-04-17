@@ -1,13 +1,15 @@
 import { Component, inject, input, InputSignal, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
-import { CarouselModule } from 'ngx-owl-carousel-o';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Chart, registerables } from 'chart.js';
 import { Subscription } from 'rxjs';
-import { CheckQuestionInterface } from '../../interfaces/Questions/check-question-interface';
+import { Answer, ScoreAdaptorRes } from '../../interfaces/Questions/check-question-interface';
 import { Question } from '../../interfaces/Questions/iquestions-on-exam-res';
 import { QuestionService } from '../../services/Questions/question.service';
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-exam-modal',
-  imports: [CarouselModule],
+  imports: [ BrowserAnimationsModule ],
   templateUrl: './exam-modal.component.html',
   styleUrl: './exam-modal.component.scss'
 })
@@ -15,27 +17,35 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   private readonly _QuestionService = inject(QuestionService);
 
   e_id: InputSignal<string> = input('');
-  disabled: WritableSignal<boolean> = signal(true);
+  showScore :WritableSignal<boolean> = signal(false);
+  score !:ScoreAdaptorRes;
   questionsOnExam !: Question[];
   index: number = 0;
-  answers : CheckQuestionInterface[] = [];
+  answers : Answer[] = [];
   duration !:number;
   time !:number;
   minutes !:number;
   seconds :number = 0;
   allQuestionsOnExamID !: Subscription;
+  checkQuestionsID !: Subscription;
+  chart:any;
+  data:any;
+  config:any;
 
   ngOnInit(): void {
     this.startExam(this.e_id());
     
     let intervalId = setInterval(() => {
       if(this.seconds === 0){
-        this.minutes = this.duration -1;
-        this.seconds = 60;
+        this.minutes = this.minutes -1;
+        this.seconds = 59;
       }else{
         this.seconds = this.seconds - 1;
       }
-      if(this.minutes === 0) clearInterval(intervalId)
+      if(this.minutes === 0){
+        clearInterval(intervalId);
+        this.submit();
+      }
   }, 1000)
 
   }
@@ -45,6 +55,7 @@ export class ExamModalComponent implements OnInit, OnDestroy {
       next: (res) => {
         this.questionsOnExam = res.questions;
         this.duration = res.questions[0].exam.duration;
+        this.minutes = res.questions[0].exam.duration;
       }
     })
   }
@@ -53,12 +64,10 @@ export class ExamModalComponent implements OnInit, OnDestroy {
     let index = this.answers.findIndex((ans) => ans.questionId === q_id);
     if (index == -1) {
       this.answers.push({ questionId: q_id, correct: key });
-      //sessionStorage.setItem('answers' , JSON.stringify(this.answers));
-      this.disabled.update( (value)=> value = false );
+      sessionStorage.setItem('answers' , JSON.stringify(this.answers));
     } else {
       this.answers[index].correct = key;
-      //sessionStorage.setItem('answers' , JSON.stringify(this.answers));
-      this.disabled.update( (value)=> value = false );
+      sessionStorage.setItem('answers' , JSON.stringify(this.answers));
     }
   }
 
@@ -66,16 +75,17 @@ export class ExamModalComponent implements OnInit, OnDestroy {
     return this.answers.some(answer => answer.questionId === q_id && answer.correct === key);
   }
 
+  check(q_id:string): boolean{
+    return this.answers.some(answer => answer.questionId === q_id);
+  }
+
   nextQuestion() {
     if (this.index < this.questionsOnExam.length -1) {
       this.index++;
-      this.disabled.update( (value)=> value = true );
     }else{
-      this._QuestionService.checkQuestions({ answers: this.answers , time: 10 }).subscribe({
-        next: (res)=>{
-          console.log(res)
-        }
-      })
+      this.submit();
+      this.showScore.update( (value)=> value = true );
+      this.chart = new Chart('myScore' , this.config);
     }
   }
   previousQuestion() {
@@ -84,9 +94,38 @@ export class ExamModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  submit(){
+    this.time = this.duration - this.minutes;
+      this.checkQuestionsID = this._QuestionService.checkQuestions({ answers: this.answers , time: this.time }).subscribe({
+        next: (res)=>{
+          this.score = res;
+           this.data = {
+            labels: [
+              'correct',
+              'incorrect'
+            ],
+            datasets: [{
+              label: 'score',
+              data: [this.score.correct, this.score.wrong],
+              backgroundColor: [
+                '#02369C',
+                '#CC1010'
+              ],
+              hoverOffset: 4
+            }]
+          };
+           this.config = {
+            type: 'doughnut',
+            data: this.data,
+          };
+        }
+      })
+  }
+
   ngOnDestroy(): void {
     this.allQuestionsOnExamID?.unsubscribe();
-    //sessionStorage.clear()
+    this.checkQuestionsID?.unsubscribe();
+    sessionStorage.removeItem('answers');
   }
 
 }

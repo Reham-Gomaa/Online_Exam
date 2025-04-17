@@ -1,5 +1,4 @@
-<section class="relative">
-    <section class=" absolute top-10 start-8 ">
+<section class="py-10 px-8">
         <div class="max-lg:flex-col flex justify-between">
             <div class="lg:hidden p-2">
                 <app-sidebar></app-sidebar>
@@ -9,23 +8,23 @@
                 <div class="w-[9.4375rem] h-[1.8125rem]">
                     <img src="./images/Final Logo 1.png" alt="elevate logo">
                 </div>
-                <div class="xl:w-[12.0625rem] h-[124px] flex flex-col justify-between">
-                    <button routerLink="/dashboard" class="side-button-style  main-bg rounded-[.625rem] ">
+                <div class="xl:w-[175px] h-[124px] flex flex-col justify-between">
+                    <button routerLink="/dashboard" routerLinkActive="main-bg text-white rounded-[.625rem]" class="side-button-style">
                         <div class="img-style">
                             <img src="./images/Vector.png" alt="vector">
                         </div>
                         <div>
-                            <span class="btnspan text-white">Dashboard</span>
+                            <span class="btnspan history">Dashboard</span>
                         </div>
                     </button>
                     <button class="side-button-style">
                         <div class="img-style">
                             <img src="./images/ic_twotone-history.png" alt="history">
                         </div>
-                        <span class="span history">Quiz History</span>
+                        <span class="btnspan history">Quiz History</span>
                     </button>
                 </div>
-                <button (click)="logOut()" class="py-2 px-1 grid gap-10 relative">
+                <button (click)="logOut()" class="py-2 px-1 grid gap-8 relative">
                     <div class="w-[1.5625rem] h-[1.5625rem] absolute top-[.6563rem] start-[.6563rem]">
                         <img src="./images/Vector (1).png" alt="log out icon">
                     </div>
@@ -46,16 +45,14 @@
                     <button
                         class="w-[11.9375rem] h-[3.8125rem] rounded-[1.25rem] py-4 px-8   main-bg span text-white">Start
                         Quiz</button>
-                    <div class="user w-[3.8125rem] h-[3.8125rem] rounded-full  main-bg">
+                    <div class="user w-[3.8125rem] h-[3.8125rem]">
+                        <img class="rounded-full" src="./images/admin.png" alt="">
                     </div>
 
                 </div>
-                <div class=" mt-10">
-                    <div class="router ">
+                <div class=" mt-10 router">
                         <router-outlet />
-                    </div>
                 </div>
             </div>
         </div>
-    </section>
 </section>

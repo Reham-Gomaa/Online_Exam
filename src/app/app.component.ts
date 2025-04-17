@@ -6,7 +6,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet , NgxSpinnerModule],
+  imports: [RouterOutlet , NgxSpinnerModule  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

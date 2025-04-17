@@ -1,6 +1,8 @@
 $success : #11CE19;
 $input : #EDEFF3;
 $next: #E5E5E5;
+$correct: #02369C;
+$incorrect: #CC1010;
 
 .success-color{
     color: $success;
@@ -10,6 +12,18 @@ $next: #E5E5E5;
 }
 .next{
     background: lch(90.94% 0.01 296.81);
+}
+.correct{
+    color: $correct;
+}
+.cborder{
+    border: 1px solid #02369C
+}
+.incorrect{
+    color: $incorrect;
+}
+.inborder{
+    border: 1px solid #CC1010
 }
 
 :host{

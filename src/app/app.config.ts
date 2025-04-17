@@ -3,16 +3,18 @@ import { provideRouter, withViewTransitions } from '@angular/router';
 
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideStore } from '@ngrx/store';
-import { routes } from './app.routes';
-import { reqHeaderInterceptor } from './core/interceptors/req-header.interceptor';
-import { tokenReducer } from './store/token.reducer';
-import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
-import { provideToastr } from 'ngx-toastr';
-import { resErrorInterceptor } from './core/interceptors/res-error.interceptor';
-import { loadingInterceptor } from './core/interceptors/loading.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { Base_Url } from 'auth-api';
+import { provideToastr } from 'ngx-toastr';
+import { routes } from './app.routes';
+import { loadingInterceptor } from './core/interceptors/loading.interceptor';
+import { reqHeaderInterceptor } from './core/interceptors/req-header.interceptor';
+import { resErrorInterceptor } from './core/interceptors/res-error.interceptor';
+import { tokenReducer } from './store/token.reducer';
+//import { Base_Url } from 'auth-api';
+import { Base_Url } from '../../projects/auth-api/src/public-api';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [

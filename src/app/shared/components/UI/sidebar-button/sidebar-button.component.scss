@@ -1,0 +1,19 @@
+$history: #696F79;
+
+.text-white{
+    color: white !important;
+}
+.history{
+    color:$history;
+}
+
+.btnspan{
+    @apply font-semibold lg:text-xl align-middle;
+}
+.side-button-style{
+    @apply h-[2.875rem] flex justify-between items-center  p-2;
+}
+
+.img-style{
+    @apply w-6 h-6 ;
+}

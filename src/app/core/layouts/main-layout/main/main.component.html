@@ -9,26 +9,18 @@
                     <img src="./images/Final Logo 1.png" alt="elevate logo">
                 </div>
                 <div class="xl:w-[175px] h-[124px] flex flex-col justify-between">
-                    <button routerLink="/dashboard" routerLinkActive="main-bg text-white rounded-[.625rem]" class="side-button-style">
-                        <div class="img-style">
-                            <img src="./images/Vector.png" alt="vector">
-                        </div>
-                        <div>
-                            <span class="btnspan history">Dashboard</span>
-                        </div>
-                    </button>
-                    <button class="side-button-style">
-                        <div class="img-style">
-                            <img src="./images/ic_twotone-history.png" alt="history">
-                        </div>
-                        <span class="btnspan history">Quiz History</span>
-                    </button>
+                    <app-sidebar-button [link]="'/dashboard'" [text]="'Dashbord'" >
+                        <img [src]="currentUrl.includes('dashboard') ? './images/activeVector.png' : './images/Vector.png' " alt="vector">
+                    </app-sidebar-button>
+                    <app-sidebar-button [link]="'/history'" [text]="'Quiz History'" >
+                        <img [src]="currentUrl.includes('history') ? './images/active_twotone-history.png' : './images/ic_twotone-history.png' " alt="history">
+                    </app-sidebar-button>
                 </div>
                 <button (click)="logOut()" class="py-2 px-1 grid gap-8 relative">
                     <div class="w-[1.5625rem] h-[1.5625rem] absolute top-[.6563rem] start-[.6563rem]">
                         <img src="./images/Vector (1).png" alt="log out icon">
                     </div>
-                    <span class="span history">Log Out</span>
+                    <span class="btnspan history">Log Out</span>
                 </button>
             </div>
 

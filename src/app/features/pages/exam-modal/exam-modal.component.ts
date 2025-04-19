@@ -1,4 +1,4 @@
-import { Component, inject, input, InputSignal, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, ElementRef, inject, input, InputSignal, OnDestroy, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { Subscription } from 'rxjs';
 import { Answer, ScoreAdaptorRes } from '../../interfaces/Questions/check-question-interface';
@@ -8,7 +8,7 @@ Chart.register(...registerables);
 
 @Component({
   selector: 'app-exam-modal',
-  imports: [  ],
+  imports: [],
   templateUrl: './exam-modal.component.html',
   styleUrl: './exam-modal.component.scss'
 })
@@ -31,6 +31,7 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   data:any;
   config:any;
   total!:number;
+  @ViewChild('myScore')scoreChart !: ElementRef;
 
   ngOnInit(): void {
     this.startExam(this.e_id());
@@ -117,9 +118,14 @@ export class ExamModalComponent implements OnInit, OnDestroy {
             type: 'doughnut',
             data: this.data,
           };
-          this.chart = new Chart('myScore' , this.config);
+          this.chart = new Chart(this.scoreChart.nativeElement , this.config);
         }
       })
+  }
+
+  showResults(){
+    this.index = 0;
+    this.showScore.update( (value)=> value = false )
   }
 
   ngOnDestroy(): void {

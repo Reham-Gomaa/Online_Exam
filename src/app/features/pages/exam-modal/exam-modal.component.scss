@@ -1,9 +1,16 @@
 $success : #11CE19;
 $input : #EDEFF3;
 $next: #E5E5E5;
-$correct: rgb(2, 54, 156);
-$incorrect: rgb(204, 16, 16);
+$correct: #02369c;
+$incorrect: #cc1010;
+$bg-correct: #CAF9CC;
 
+.bg-correct{
+    background: $bg-correct;
+}
+.border-correct{
+    border: 1px solid $success
+}
 .success-color{
     color: $success;
 }

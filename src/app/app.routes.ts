@@ -17,6 +17,7 @@ export const routes: Routes = [
         { path: '' , redirectTo: 'dashboard' , pathMatch: 'full' },
         { path: 'dashboard' , component: DashboardComponent , title: 'Dashboard' },
         { path: 'diploma/:s_id' , loadComponent: ()=> import('./features/pages/diploma/diploma.component').then( (c)=> c.DiplomaComponent ) , title: 'Diploma' },
+        { path: 'history' , loadComponent: ()=> import('./features/pages/history/history.component').then( (c)=> c.HistoryComponent ) , title: 'History' },
         { path: '**' , loadComponent: ()=> import('./core/pages/wildcard/wildcard.component').then( (c)=> c.WildcardComponent  ) , title: 'Not Found' }
     ] }
 ];

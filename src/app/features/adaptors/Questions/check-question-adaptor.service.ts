@@ -13,7 +13,7 @@ export class CheckQuestionAdaptorService implements IAdapt{
     return {
       correct: data.correct,
       wrong: data.wrong,
-      total: data.total
+      total: data.total,
     }
   }
 }

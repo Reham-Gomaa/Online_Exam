@@ -32,4 +32,8 @@ export class QuestionService implements QuestionApi {
     )
   }
 
+  getUserHistory():Observable<any>{
+    return this._HttpClient.get( this._Base_Url + QuestionEndpoint.GET_USER_HISTORY )
+  }
+
 }

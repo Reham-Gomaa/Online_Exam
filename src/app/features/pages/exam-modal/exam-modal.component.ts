@@ -7,6 +7,7 @@ import { QuestionService } from '../../services/Questions/question.service';
 import { isPlatformBrowser } from '@angular/common';
 Chart.register(...registerables);
 import { BaseChartDirective } from 'ng2-charts';
+
 @Component({
   selector: 'app-exam-modal',
   imports: [ BaseChartDirective ],
@@ -15,6 +16,8 @@ import { BaseChartDirective } from 'ng2-charts';
 })
 export class ExamModalComponent implements OnInit, OnDestroy {
   private readonly _QuestionService = inject(QuestionService);
+  private readonly platformId = inject(PLATFORM_ID);
+  isBrowser = isPlatformBrowser(this.platformId);
 
   e_id: InputSignal<string> = input('');
   showScore :WritableSignal<boolean> = signal(false);
@@ -33,7 +36,7 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   data:any;
   config:any;
   total!:number;
-  @ViewChild('myScore')scoreChart !: ElementRef;
+  //@ViewChild('myScore')scoreChart !: ElementRef;
 
   doughnutChartLabels!: string[];
   doughnutChartData!: ChartData<'doughnut'>;
@@ -141,15 +144,11 @@ export class ExamModalComponent implements OnInit, OnDestroy {
     this.showScore.update( (value)=> value = false )
   }
 
-  private readonly platformId = inject(PLATFORM_ID);
-  isBrowser = isPlatformBrowser(this.platformId);
-
-
   initChart() {
     this.doughnutChartLabels = [this.score.total];
     this.doughnutChartData = {
       labels: this.doughnutChartLabels,
-      datasets: [{ data: [this.score.correct, this.score.wrong] }],
+      datasets: [{ data: [30,50] }],
     };
     this.doughnutChartType = 'doughnut';
   }

@@ -1,9 +1,10 @@
-import { Component, inject, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Exam } from '../../interfaces/Exams/iexam-on-subject-res';
 import { ExamsService } from '../../services/Exams/exams.service';
 import { ExamModalComponent } from "../exam-modal/exam-modal.component";
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-diploma',

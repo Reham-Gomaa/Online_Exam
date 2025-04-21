@@ -1,5 +1,6 @@
-<div class="w-[29.375rem] md:w-[42.875rem] bg-white rounded-[1.25rem] myShadow p-6 grid gap-12">
-    @if (showScore() == false) {
+<div class="w-[29.375rem] bg-white rounded-[1.25rem] myShadow p-6 grid gap-12"
+    [class]="showScore() == false && score ? 'md:w-[48.5rem]' : 'md:w-[42.875rem]'">
+    @if (showScore() == false && !score) {
     @if(questionsOnExam){
     <div class="grid gap-[1.6875rem]">
         <div class="grid gap-[1.6875rem]">
@@ -17,8 +18,14 @@
                     </span>
                 </div>
             </div>
-            <!-- TODO: dots  -->
-            <div>dots</div>
+ n            <div class="flex justify-between items-center">
+                @for (dot of questionsOnExam; track dot._id) {
+                    <div class="w-[.625rem] h-[.625rem] rounded-full" [class]="{
+                        'dot': !check(dot._id),
+                        'main-bg': check(dot._id),
+                    }"></div>
+                }
+            </div>
         </div>
         <div class="grid gap-6 ">
             <h3 class="font-medium text-lg md:text-2xl">{{questionsOnExam[index].question}}</h3>
@@ -26,9 +33,9 @@
                 @for (answer of questionsOnExam[index].answers; track $index) {
                 <!-- h-[4.5rem] w-full  -->
                 <div class="  rounded-[.625rem] py-4 px-2 flex flex-nowrap items-center" [class]="{
-                    'bg-blue-100': isSelected(questionsOnExam[index]._id , answer.key),
-                    'input-bg': !isSelected(questionsOnExam[index]._id , answer.key)
-                        }">
+                        'bg-blue-100': isSelected(questionsOnExam[index]._id , answer.key),
+                        'input-bg': !isSelected(questionsOnExam[index]._id , answer.key)
+                            }">
                     <input [id]="$index" type="radio" [value]="answer.answer" [name]="questionsOnExam[index]._id"
                         (change)="selectAnswer(questionsOnExam[index]._id , answer.key)"
                         [checked]="isSelected(questionsOnExam[index]._id, answer.key)"
@@ -55,10 +62,16 @@
     <h2 class="font-medium text-2xl">Your score</h2>
     <div class="flex justify-center items-center">
         <div class="me-2 sm:me-3 md:me-20">
-            {{score.total}}
-            <div>
-                <canvas #myScore>{{chart}}</canvas>
-            </div>
+            
+            <div class="w-60">
+                @if(isBrowser){
+                  <canvas
+                    baseChart
+                    [data]="doughnutChartData"
+                    [type]="doughnutChartType">
+                  </canvas>
+                }
+              </div>
         </div>
         <div>
             <div class="md:w-[10.625rem] flex justify-between items-center mb-2">
@@ -82,36 +95,42 @@
 
     }
     }
-<!-- 
+
     @if (showScore() == false && score) {
-        <div class="grid gap-[1.6875rem]">
-            
-            <div class="grid gap-6 ">
-                <h3 class="font-medium text-lg md:text-2xl">{{questionsOnExam[index].question}}</h3>
-                <div class="grid gap-4">
-                    @for (item of questionsOnExam[index].answers; track $index) {
-                    <div class="  rounded-[.625rem] py-4 px-2 flex flex-nowrap items-center" [class]="{
-                        'bg-correct': item  ,
-                        'input-bg': !isSelected(questionsOnExam[index]._id , answer.key)
-                            }">
-                        <input [id]="$index" type="radio" [value]="answer.answer" [name]="questionsOnExam[index]._id"
-                            (change)="selectAnswer(questionsOnExam[index]._id , answer.key)"
-                            [checked]="isSelected(questionsOnExam[index]._id, answer.key)"
-                            class="me-1 w-4 h-4 text-blue-600 border-correct focus:ring-blue-500 cursor-pointer">
-                        <label [for]="$index"
-                            class="ms-1 font-normal text-sm md:text-xl text-black">{{answer.answer}}</label>
-                    </div>
-                    }
+    <div class="grid gap-2 md:gap-[1.6875rem] grid-cols-2">
+        @for (ques of questionsOnExam.slice(startIndex , startIndex+4); track ques._id) {
+        <div class="grid md:gap-4 ">
+            <h3 class="font-medium text-sm md:text-lg">{{ques.question}}</h3>
+            <div class="grid gap-2">
+                @for (item of ques.answers; track $index) {
+                <div class="overflow-hidden rounded-[.625rem] py-1 px-2 flex flex-nowrap items-center" [class]="{
+                            'bg-correct': (item.key == ques.correct),
+                            'bg-wrong': (item.key == answersMap(ques._id) && item.key != ques.correct ),
+                            'input-bg': (item.key != answersMap(ques._id) && item.key != ques.correct )
+                        }">
+                    <input [id]="$index+ques._id" type="radio" [name]="questionsOnExam[index]._id"
+                        class="me-1 w-2 h-2 cursor-pointer" [class]="{
+                                    'border-correct': (item.key == ques.correct),
+                                    'focus:ring-correct': (item.key == ques.correct),
+                                    'border-wrong': (item.key == answersMap(ques._id) && item.key != ques.correct ),
+                                    'focus:ring-wrong': (item.key == answersMap(ques._id) && item.key != ques.correct )
+                                    }" [checked]="item.key == answersMap(ques._id)">
+                    <label [for]="$index+ques._id"
+                        class="ms-1 font-normal text-xs md:text-md text-black">{{item.answer}}</label>
                 </div>
-            </div>
-            <div class="h-14 grid gap-12 grid-cols-2">
-                <button (click)="previousQuestion()" id="back" class=" h-14 rounded-full">Back</button>
-                <button [disabled]="!check(questionsOnExam[index]._id)" (click)="nextQuestion()"
-                    class=" h-14 rounded-full main-bg text-white disabled:bg-gray-300 disabled:text-gray-400">
-                    @if (index == questionsOnExam.length -1 || minutes == 0) {Submit}
-                    @else {Next}
-                </button>
+                }
+
             </div>
         </div>
-    } -->
+        }
+        <div class=" grid gap-12 grid-cols-2">
+            <button (click)="startIndex > 0 ? startIndex = startIndex-4 : 0" id="back"
+                class="w-1/3 h-14 rounded-full text-center">Back</button>
+            <button
+                (click)="startIndex < questionsOnExam.length -1 ? startIndex = startIndex+4 : questionsOnExam.length -1"
+                class="w-1/3 h-14 rounded-full main-bg text-white text-center">Next
+            </button>
+        </div>
+    </div>
+    }
 </div>

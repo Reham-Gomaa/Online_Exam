@@ -1,14 +1,15 @@
-import { Component, ElementRef, inject, input, InputSignal, OnDestroy, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
-import { Chart, registerables } from 'chart.js';
+import { Component, ElementRef, inject, input, InputSignal, OnDestroy, OnInit, PLATFORM_ID, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Chart, ChartData, ChartType, registerables } from 'chart.js';
 import { Subscription } from 'rxjs';
 import { Answer, ScoreAdaptorRes } from '../../interfaces/Questions/check-question-interface';
 import { Question } from '../../interfaces/Questions/iquestions-on-exam-res';
 import { QuestionService } from '../../services/Questions/question.service';
+import { isPlatformBrowser } from '@angular/common';
 Chart.register(...registerables);
-
+import { BaseChartDirective } from 'ng2-charts';
 @Component({
   selector: 'app-exam-modal',
-  imports: [],
+  imports: [ BaseChartDirective ],
   templateUrl: './exam-modal.component.html',
   styleUrl: './exam-modal.component.scss'
 })
@@ -20,6 +21,7 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   score !:ScoreAdaptorRes;
   questionsOnExam !: Question[];
   index: number = 0;
+  startIndex: number = 0;
   answers : Answer[] = [];
   duration !:number;
   time !:number;
@@ -32,6 +34,10 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   config:any;
   total!:number;
   @ViewChild('myScore')scoreChart !: ElementRef;
+
+  doughnutChartLabels!: string[];
+  doughnutChartData!: ChartData<'doughnut'>;
+  doughnutChartType!: ChartType;
 
   ngOnInit(): void {
     this.startExam(this.e_id());
@@ -80,6 +86,11 @@ export class ExamModalComponent implements OnInit, OnDestroy {
     return this.answers.some(answer => answer.questionId === q_id);
   }
 
+  answersMap(q_id:string):string{
+  let index = this.answers.findIndex( (q)=> q.questionId == q_id );
+  return this.answers[index].correct;
+  }
+
   nextQuestion() {
     if (this.index < this.questionsOnExam.length -1) {
       this.index++;
@@ -99,26 +110,28 @@ export class ExamModalComponent implements OnInit, OnDestroy {
       this.checkQuestionsID = this._QuestionService.checkQuestions({ answers: this.answers , time: this.time }).subscribe({
         next: (res)=>{
           this.score = res;
-           this.data = {
-            labels: [
-              'correct',
-              'incorrect'
-            ],
-            datasets: [{
-              label: 'score',
-              data: [this.score.correct, this.score.wrong],
-              backgroundColor: [
-                'rgb(2, 54, 156)',
-                'rgb(204, 16, 16)'
-              ],
-              hoverOffset: 4
-            }]
-          };
-           this.config = {
-            type: 'doughnut',
-            data: this.data,
-          };
-          this.chart = new Chart(this.scoreChart.nativeElement , this.config);
+          //this.initChart();
+          console.log(this.score)
+          //  this.data = {
+          //   labels: [
+          //     'correct',
+          //     'incorrect'
+          //   ],
+          //   datasets: [{
+          //     label: 'score',
+          //     data: [this.score.correct, this.score.wrong],
+          //     backgroundColor: [
+          //       'rgb(2, 54, 156)',
+          //       'rgb(204, 16, 16)'
+          //     ],
+          //     hoverOffset: 4
+          //   }]
+          // };
+          //  this.config = {
+          //   type: 'doughnut',
+          //   data: this.data,
+          // };
+          // this.chart = new Chart(this.scoreChart.nativeElement , this.config);
         }
       })
   }
@@ -126,6 +139,23 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   showResults(){
     this.index = 0;
     this.showScore.update( (value)=> value = false )
+  }
+
+  private readonly platformId = inject(PLATFORM_ID);
+  isBrowser = isPlatformBrowser(this.platformId);
+
+
+  initChart() {
+    this.doughnutChartLabels = [this.score.total];
+    this.doughnutChartData = {
+      labels: this.doughnutChartLabels,
+      datasets: [{ data: [this.score.correct, this.score.wrong] }],
+    };
+    this.doughnutChartType = 'doughnut';
+  }
+
+  ngAfterViewInit(): void {
+    this.initChart();
   }
 
   ngOnDestroy(): void {

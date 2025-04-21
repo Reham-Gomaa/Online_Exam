@@ -14,6 +14,7 @@ export class CheckQuestionAdaptorService implements IAdapt{
       correct: data.correct,
       wrong: data.wrong,
       total: data.total,
+       WrongQuestions: data.WrongQuestions
     }
   }
 }

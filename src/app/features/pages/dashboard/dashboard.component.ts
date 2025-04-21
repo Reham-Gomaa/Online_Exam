@@ -18,10 +18,6 @@ export class DashboardComponent  implements OnInit , OnDestroy{
   userInfo$ !: Observable<IToken>;
   allSubjectID !:Subscription;
 
-  // constructor( private _Store : Store<{token : IToken}> ){
-  //   this.userInfo$ = this._Store.select( selectToken )
-  // }
-
   ngOnInit(): void {
     this.getAllSubjects()
   }

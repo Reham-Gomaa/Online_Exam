@@ -41,5 +41,10 @@
         <app-exam-modal [e_id]="exam_id()" [class.hidden]="start() == false"></app-exam-modal>
     </div>
    }
+    @if (examsOnSub.length == 0) {
+        <div class="flex justify-center items-center">
+            <h1 class="font-semibold">There is no exams available on this subject</h1>
+        </div>
+       }
 
 </section>

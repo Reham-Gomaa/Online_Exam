@@ -43,4 +43,5 @@ export interface ScoreAdaptorRes {
   correct: number
   wrong: number
   total: string
+  WrongQuestions: WrongQuestion[]
 }

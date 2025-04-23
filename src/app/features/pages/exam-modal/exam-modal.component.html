@@ -18,9 +18,9 @@
                     </span>
                 </div>
             </div>
- n            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center">
                 @for (dot of questionsOnExam; track dot._id) {
-                    <div class="w-[.625rem] h-[.625rem] rounded-full" [class]="{
+                <div class="w-[.625rem] h-[.625rem] rounded-full" [class]="{
                         'dot': !check(dot._id),
                         'main-bg': check(dot._id),
                     }"></div>
@@ -60,17 +60,15 @@
     @if (score) {
     <h2 class="font-medium text-2xl">Your score</h2>
     <div class="flex justify-center items-center">
-        <div class="me-2 sm:me-3 md:me-20">
-            
-            <div class="w-60">
+        <div class="me-2 sm:me-1 md:me-20">
+
+            <div class="md:w-60">
                 @if(isBrowser){
-                  <canvas
-                    baseChart
-                    [data]="doughnutChartData"
-                    [type]="doughnutChartType">
-                  </canvas>
+                <canvas baseChart [data]="doughnutChartData" [type]="doughnutChartType">
+                </canvas>
+                <div> {{score.total}}</div>
                 }
-              </div>
+            </div>
         </div>
         <div>
             <div class="md:w-[10.625rem] flex justify-between items-center mb-2">
@@ -126,8 +124,7 @@
     <div class="flex justify-between items-center">
         <button (click)="startIndex > 0 ? startIndex = startIndex-4 : 0" id="back"
             class="w-1/4 h-14 rounded-full text-center">Back</button>
-        <button
-            (click)="startIndex < questionsOnExam.length -1 ? startIndex = startIndex+4 : questionsOnExam.length-1"
+        <button (click)="startIndex < questionsOnExam.length -1 ? startIndex = startIndex+4 : questionsOnExam.length-1"
             class="w-1/4 h-14 rounded-full main-bg text-white text-center">Next
         </button>
     </div>

@@ -91,8 +91,10 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   }
 
   answersMap(q_id: string): string {
-    let index = this.answers.findIndex((q) => q.questionId == q_id);
-    return this.answers[index].correct;
+    // let index = this.answers.findIndex((q) => q.questionId == q_id);
+    // return this.answers[index].correct;
+    const answer = this.answers.find((q) => q.questionId === q_id);
+    return answer?.correct ?? '';
   }
 
   nextQuestion() {

@@ -44,7 +44,7 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.startExam(this.e_id());
+    this.startExam();
 
     let intervalId = setInterval(() => {
       if (this.seconds === 0) {
@@ -61,8 +61,8 @@ export class ExamModalComponent implements OnInit, OnDestroy {
 
   }
 
-  startExam(e_id: string) {
-    this.allQuestionsOnExamID = this._QuestionService.getAllQuestionsOnExam(e_id).subscribe({
+  startExam() {
+    this.allQuestionsOnExamID = this._QuestionService.getAllQuestionsOnExam(this.e_id()).subscribe({
       next: (res) => {
         this.questionsOnExam = res.questions;
         this.duration = res.questions[0].exam.duration;
@@ -99,6 +99,7 @@ export class ExamModalComponent implements OnInit, OnDestroy {
     if (this.index < this.questionsOnExam.length - 1) {
       this.index++;
     } else {
+      this.index = 0;
       this.submit();
       this.showScore.update((value) => value = true);
     }
@@ -120,7 +121,6 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   }
 
   showResults() {
-    this.index = 0;
     this.showScore.update((value) => value = false)
   }
 
@@ -134,6 +134,10 @@ export class ExamModalComponent implements OnInit, OnDestroy {
       }],
     };
     this.doughnutChartType = 'doughnut';
+  }
+
+  close(){
+    this._QuestionService.closeModal.set(true)
   }
 
   ngOnDestroy(): void {

@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { QuestionApi } from '../../base/Questions/questions.abstract';
 import { map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -14,6 +14,8 @@ import { CheckQuestionAdaptorService } from '../../adaptors/Questions/check-ques
 })
 export class QuestionService implements QuestionApi {
   constructor() { }
+
+  closeModal :WritableSignal<boolean> = signal(false);
 
   private readonly _HttpClient = inject(HttpClient);
   private readonly _Base_Url = inject(Base_Url);

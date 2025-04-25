@@ -22,7 +22,7 @@
         }
     </div>
 
-    <div [class.hidden]="showModal() == false"
+    <div [class.hidden]="showModal() == false || closeModal() == true"
         class="modal h-screen fixed inset-0 z-50 flex justify-center items-center">
         <div [class.hidden]="start() == true"
             class="h-[19.3125rem] bg-white rounded-[1.25rem] myShadow p-6 grid gap-12">

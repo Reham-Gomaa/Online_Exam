@@ -1,5 +1,8 @@
 <div class="w-[29.375rem] bg-white rounded-[1.25rem] myShadow p-6 grid gap-12"
     [class]="showScore() == false && score ? 'md:w-[48.5rem]' : 'md:w-[42.875rem]'">
+
+        <!-- exam -->
+
     @if (showScore() == false && !score) {
     @if(questionsOnExam){
     <div class="grid gap-[1.6875rem]">
@@ -40,7 +43,7 @@
                         [checked]="isSelected(questionsOnExam[index]._id, answer.key)"
                         class="me-1 w-4 h-4 text-blue-600 border-blue-500 focus:ring-blue-500 cursor-pointer">
                     <label [for]="$index"
-                        class="ms-1 font-normal text-sm md:text-xl text-black">{{answer.answer}}</label>
+                        class="ms-1 font-normal text-sm md:text-xl text-black w-full cursor-pointer">{{answer.answer}}</label>
                 </div>
                 }
             </div>
@@ -56,6 +59,9 @@
     </div>
     }
     }
+
+        <!-- score -->
+
     @if (showScore() == true) {
     @if (score) {
     <h2 class="font-medium text-2xl">Your score</h2>
@@ -92,10 +98,41 @@
     }
     }
 
+        <!-- results -->
+
     @if (showScore() == false && score) {
-    <div class="grid gap-2 md:gap-[1.6875rem] grid-cols-2">
+        <!-- design: 4 questions -->
+    <!-- <div class="grid gap-2 md:gap-[1.6875rem] grid-cols-2">
         @for (ques of questionsOnExam.slice(startIndex , startIndex+4); track ques._id) {
         <div class="grid md:gap-4 ">
+            <h3 class="font-medium text-sm md:text-lg">{{ques.question}}</h3>
+            <div class="grid gap-2">
+                @for (item of ques.answers; track $index) {
+                <div class="overflow-hidden rounded-[.625rem] py-1 px-2 flex flex-nowrap items-center" [class]="{
+                            'bg-correct': (item.key == ques.correct),
+                            'bg-wrong': (item.key == answersMap(ques._id) && item.key != ques.correct ),
+                            'input-bg': (item.key != answersMap(ques._id) && item.key != ques.correct )
+                        }">
+                    <input [id]="$index+ques._id" type="radio" [name]="questionsOnExam[index]._id"
+                        class="me-1 w-2 h-2 cursor-pointer" [class]="{
+                                    'border-correct': (item.key == ques.correct),
+                                    'focus:ring-correct': (item.key == ques.correct),
+                                    'border-wrong': (item.key == answersMap(ques._id) && item.key != ques.correct ),
+                                    'focus:ring-wrong': (item.key == answersMap(ques._id) && item.key != ques.correct )
+                                    }" [checked]="(item.key == answersMap(ques._id))">
+                    <label [for]="$index+ques._id"
+                        class="ms-1 font-normal text-xs md:text-md text-black">{{item.answer}}</label>
+                </div>
+                }
+
+            </div>
+        </div>
+        }
+    </div> -->
+    
+    <div class="grid gap-3 md:gap-2 h-[31.25rem] grid-cols-2 overflow-auto">
+        @for (ques of questionsOnExam; track ques._id) {
+        <div class="grid md:gap-4">
             <h3 class="font-medium text-sm md:text-lg">{{ques.question}}</h3>
             <div class="grid gap-2">
                 @for (item of ques.answers; track $index) {
@@ -121,10 +158,15 @@
         }
     </div>
     <div class="flex justify-between items-center">
-        <button (click)="startIndex > 0 ? startIndex = startIndex-4 : 0" id="back"
+            <!-- design: 2 buttons for the 4 questions design -->
+              <!-- <button (click)="startIndex > 0 ? startIndex = startIndex-4 : 0" id="back"
             class="w-1/4 h-14 rounded-full text-center">Back</button>
         <button (click)="startIndex < questionsOnExam.length -1 ? startIndex = startIndex+4 : questionsOnExam.length-1"
-            class="w-1/4 h-14 rounded-full main-bg text-white text-center">Next
+            class="w-1/4 h-14 rounded-full main-bg text-white text-center" >
+            Next
+        </button> -->
+        <button (click)="close()" id="back"class="w-1/4 h-14 rounded-full text-center block mx-auto">
+            Close
         </button>
     </div>
     }

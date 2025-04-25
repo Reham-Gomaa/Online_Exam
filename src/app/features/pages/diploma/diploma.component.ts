@@ -1,10 +1,10 @@
-import { Component, inject, OnDestroy, OnInit, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Exam } from '../../interfaces/Exams/iexam-on-subject-res';
 import { ExamsService } from '../../services/Exams/exams.service';
+import { QuestionService } from '../../services/Questions/question.service';
 import { ExamModalComponent } from "../exam-modal/exam-modal.component";
-import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-diploma',
@@ -15,7 +15,10 @@ import { isPlatformBrowser } from '@angular/common';
 export class DiplomaComponent implements OnInit, OnDestroy {
   private readonly _ActivatedRoute = inject(ActivatedRoute);
   private readonly _ExamsService = inject(ExamsService);
+  private readonly _QuestionService = inject(QuestionService);
 
+  closeModal = computed(() => this._QuestionService.closeModal());
+  
   examsOnSub !: Exam[];
   subject_id !: string;
   exam_id : WritableSignal<string> = signal('');
@@ -44,7 +47,7 @@ export class DiplomaComponent implements OnInit, OnDestroy {
 
   showInstructions(e_id:string) {
     this.showModal.update((value) => value = true);
-    this.exam_id.update((value) => value = e_id);
+    this.exam_id.set(e_id);
   }
 
   startExam() {

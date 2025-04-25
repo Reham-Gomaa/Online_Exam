@@ -3,7 +3,7 @@ import { provideRouter, withViewTransitions } from '@angular/router';
 
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { provideStore } from '@ngrx/store';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { provideToastr } from 'ngx-toastr';
@@ -25,6 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideStore( {'token' : tokenReducer} ),
     importProvidersFrom(BrowserAnimationsModule , NgxSpinnerModule),
     provideToastr(),
-    { provide: Base_Url , useValue: `https://exam.elevateegy.com/api/v1` }
+    { provide: Base_Url , useValue: `https://exam.elevateegy.com/api/v1` },
+    provideAnimations()
 ]
 };

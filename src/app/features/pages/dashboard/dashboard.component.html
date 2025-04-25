@@ -5,32 +5,33 @@
     </div>
     <div class="flex flex-wrap mt-6">
         @if (allSubjects != null) {
-            @for (subject of allSubjects.slice(0,6); track subject._id) {
-            <div class="p-1 max-sm:w-full sm:w-1/2 lg:w-1/3 w-[330px]">
-                <div [routerLink]="[ '/diploma' , subject._id ]" class="icon relative cursor-pointer rounded-lg ">
-                    <img class="w-full " [src]="subject.icon" [alt]="subject.name">
-                    <div
-                        class="nameText text-white p-3  rounded-lg absolute bottom-[1.6875rem] start-[1.6875rem] end-[1.6875rem]">
-                        <p class="font-bold text-[.8444rem]">{{subject.name}}</p>
-                        <span class="font-medium text-[.6875rem]">Voluptatem aut ut dignissimos blanditiis</span>
-                    </div>
+        @for (subject of allSubjects.slice(0,6); track subject._id) {
+        <div class="p-1 max-sm:w-full sm:w-1/2 lg:w-1/3 w-[330px]">
+            <div [routerLink]="[ '/diploma' , subject._id ]" class="icon relative cursor-pointer rounded-lg ">
+                <img class="w-full " [src]="subject.icon" [alt]="subject.name">
+                <div
+                    class="nameText text-white p-3  rounded-lg absolute bottom-[1.6875rem] start-[1.6875rem] end-[1.6875rem]">
+                    <p class="font-bold text-[.8444rem]">{{subject.name}}</p>
+                    <span class="font-medium text-[.6875rem]">Voluptatem aut ut dignissimos blanditiis</span>
                 </div>
             </div>
-            }
-            @defer ( on interaction(show) ) {
-                @for (subject of allSubjects.slice(6,8); track subject._id) {
-                <div [@view] class="p-1 max-sm:w-full sm:w-1/2 lg:w-1/3 w-[330px]  ">
-                    <div [routerLink]="[ '/diploma' , subject._id ]" class="icon relative cursor-pointer rounded-lg ">
-                        <img class="w-full " [src]="subject.icon" [alt]="subject.name">
-                        <div
-                            class="nameText text-white p-3  rounded-lg absolute bottom-[1.6875rem] start-[1.6875rem] end-[1.6875rem]">
-                            <p class="font-bold text-[.8444rem]">{{subject.name}}</p>
-                            <span class="font-medium text-[.6875rem]">Voluptatem aut ut dignissimos blanditiis</span>
-                        </div>
-                    </div>
-                </div>
-                }
-            }
-        }
         </div>
+        }
+
+        @defer ( on interaction(show) ) {
+        @for (subject of allSubjects.slice(6,8); track subject._id) {
+        <div [@view] class="p-1 max-sm:w-full sm:w-1/2 lg:w-1/3 w-[330px]  ">
+            <div [routerLink]="[ '/diploma' , subject._id ]" class="icon relative cursor-pointer rounded-lg ">
+                <img class="w-full " [src]="subject.icon" [alt]="subject.name">
+                <div
+                    class="nameText text-white p-3  rounded-lg absolute bottom-[1.6875rem] start-[1.6875rem] end-[1.6875rem]">
+                    <p class="font-bold text-[.8444rem]">{{subject.name}}</p>
+                    <span class="font-medium text-[.6875rem]">Voluptatem aut ut dignissimos blanditiis</span>
+                </div>
+            </div>
+        </div>
+        }
+        }
+        }
+    </div>
 </section>

@@ -6,12 +6,35 @@ import { Answer, ScoreAdaptorRes } from '../../interfaces/Questions/check-questi
 import { Question } from '../../interfaces/Questions/iquestions-on-exam-res';
 import { QuestionService } from '../../services/Questions/question.service';
 import { BaseChartDirective } from 'ng2-charts';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-exam-modal',
   imports: [BaseChartDirective],
   templateUrl: './exam-modal.component.html',
-  styleUrl: './exam-modal.component.scss'
+  styleUrl: './exam-modal.component.scss',
+  animations:[
+    trigger('next' , [
+      state('*' , style({
+        opacity:'1',
+        transform:'translateX(0px)'
+      })),
+      transition((fromState, toState) => toState.startsWith('next'), [
+        style({
+          opacity:'0',
+          transform:'translateX(100px)'
+        }),
+        animate(300)
+      ]),
+      transition((fromState, toState) => toState.startsWith('back') , [
+        style({
+          opacity:'0',
+          transform:'translateX(-100px)'
+        }),
+        animate(300)
+      ])
+    ])
+  ]
 })
 export class ExamModalComponent implements OnInit, OnDestroy {
   private readonly _QuestionService = inject(QuestionService);
@@ -31,6 +54,7 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   seconds: number = 0;
   allQuestionsOnExamID !: Subscription;
   checkQuestionsID !: Subscription;
+  direction : 'next' | 'back' = 'next';
 
   doughnutChartData: ChartData<'doughnut'> | undefined;
   doughnutChartType: ChartType = 'doughnut';
@@ -97,9 +121,14 @@ export class ExamModalComponent implements OnInit, OnDestroy {
     return answer?.correct ?? '';
   }
 
+  getQuestionState(): string {
+    return `${this.direction}-${this.index}`;
+  }
+
   nextQuestion() {
     if (this.index < this.questionsOnExam.length - 1) {
       this.index++;
+      this.direction = 'next';
     } else {
       this.index = 0;
       this.submit();
@@ -109,6 +138,7 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   previousQuestion() {
     if (this.index > 0) {
       this.index--;
+      this.direction = 'back';
     }
   }
 

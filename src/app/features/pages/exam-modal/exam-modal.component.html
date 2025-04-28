@@ -1,5 +1,6 @@
 <div class="w-[29.375rem] bg-white rounded-[1.25rem] myShadow p-6 grid gap-12 overflow-hidden"
-    [class]="showScore() == false && score ? 'md:w-[48.5rem]' : 'md:w-[42.875rem]'">
+    [class]="showScore() == false && score ? 'md:w-[48.5rem]' : 'md:w-[42.875rem]'"
+    [class.hidden]="loading">
 
         <!-- exam -->
 

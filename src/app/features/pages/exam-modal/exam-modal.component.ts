@@ -1,12 +1,12 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { isPlatformBrowser } from '@angular/common';
-import { Component, inject, input, InputSignal, OnChanges, OnDestroy, OnInit, PLATFORM_ID, signal, SimpleChanges, WritableSignal } from '@angular/core';
+import { Component, effect, EffectRef, EventEmitter, inject, input, InputSignal, OnDestroy, OnInit, Output, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
 import { Chart, ChartData, ChartType, registerables } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
 import { Subscription } from 'rxjs';
 import { Answer, ScoreAdaptorRes } from '../../interfaces/Questions/check-question-interface';
 import { Question } from '../../interfaces/Questions/iquestions-on-exam-res';
 import { QuestionService } from '../../services/Questions/question.service';
-import { BaseChartDirective } from 'ng2-charts';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-exam-modal',
@@ -36,12 +36,14 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
     ])
   ]
 })
-export class ExamModalComponent implements OnDestroy , OnChanges {
+export class ExamModalComponent implements OnDestroy {
   private readonly _QuestionService = inject(QuestionService);
   private readonly platformId = inject(PLATFORM_ID);
   isBrowser = isPlatformBrowser(this.platformId);
 
   e_id: InputSignal<string> = input('');
+  examStart: InputSignal<boolean> = input(false); 
+  private startExamEffect !:EffectRef ;
   showScore: WritableSignal<boolean> = signal(false);
   score !: ScoreAdaptorRes;
   questionsOnExam !: Question[];
@@ -55,6 +57,8 @@ export class ExamModalComponent implements OnDestroy , OnChanges {
   allQuestionsOnExamID !: Subscription;
   checkQuestionsID !: Subscription;
   direction : 'next' | 'back' = 'next';
+  @Output() closed = new EventEmitter<void>();
+  loading :boolean = false;
 
   doughnutChartData: ChartData<'doughnut'> | undefined;
   doughnutChartType: ChartType = 'doughnut';
@@ -65,35 +69,40 @@ export class ExamModalComponent implements OnDestroy , OnChanges {
 
   constructor() {
     Chart.register(...registerables);
+     this.startExamEffect = effect( ()=> {
+      if( this.examStart() == true && this.e_id() ){
+        this.startExam();
+      }
+    } )
   }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if(this.e_id != undefined){
-      this.startExam()
-      let intervalId = setInterval(() => {
-        if (this.seconds === 0) {
-          this.minutes = this.minutes - 1;
-          this.seconds = 59;
-        } else {
-          this.seconds = this.seconds - 1;
-        }
-        if (this.minutes === 0) {
-          clearInterval(intervalId);
-          this.submit();
-        }
-      }, 1000)
-    }
-  }
-
+  
   startExam() {
+    this.loading = true;
     console.log('id',this.e_id())
     this.allQuestionsOnExamID = this._QuestionService.getAllQuestionsOnExam(this.e_id()).subscribe({
       next: (res) => {
+        this.loading = false;
         this.questionsOnExam = res.questions;
         this.duration = res.questions[0].exam.duration;
         this.minutes = res.questions[0].exam.duration;
+        this.setInterval();
       }
     })
+  }
+
+  setInterval(){
+    let intervalId = setInterval(() => {
+      if (this.seconds === 0) {
+        this.minutes = this.minutes - 1;
+        this.seconds = 59;
+      } else {
+        this.seconds = this.seconds - 1;
+      }
+      if (this.minutes === 0) {
+        clearInterval(intervalId);
+        this.submit();
+      }
+    }, 1000)
   }
 
   selectAnswer(q_id: string, key: string) {
@@ -144,9 +153,11 @@ export class ExamModalComponent implements OnDestroy , OnChanges {
   }
 
   submit() {
+    this.loading = true;
     this.time = this.duration - this.minutes;
     this.checkQuestionsID = this._QuestionService.checkQuestions({ answers: this.answers, time: this.time }).subscribe({
       next: (res) => {
+        this.loading = false;
         this.score = res;
         this.initChart();
       }
@@ -171,9 +182,12 @@ export class ExamModalComponent implements OnDestroy , OnChanges {
 
   close(){
     this._QuestionService.closeModal.set(true);
+    this.closed.emit();
+    
   }
 
   ngOnDestroy(): void {
+    this.startExamEffect?.destroy();
     this.allQuestionsOnExamID?.unsubscribe();
     this.checkQuestionsID?.unsubscribe();
     sessionStorage.removeItem('answers');

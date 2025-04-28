@@ -16,7 +16,7 @@
                         <img [src]="currentUrl.includes('history') ? './images/active_twotone-history.png' : './images/ic_twotone-history.png' " alt="history">
                     </app-sidebar-button>
                 </div>
-                <button (click)="logOut()" class="py-2 px-1 grid gap-8 relative">
+                <button (click)="logOut()" class="xl:w-[175px] py-2 px-1 grid gap-8 relative">
                     <div class="w-[1.5625rem] h-[1.5625rem] absolute top-[.6563rem] start-[.6563rem]">
                         <img src="./images/Vector (1).png" alt="log out icon">
                     </div>
@@ -25,6 +25,7 @@
             </div>
 
             <div class=" lg:w-5/6">
+               <div class="w-[90%]">
                 <div class="hidden lg:flex justify-between items-center p-2">
                     <div class=" relative   ">
                         <input type="text"
@@ -45,6 +46,7 @@
                 <div class=" mt-10 router">
                         <router-outlet />
                 </div>
+               </div>
             </div>
         </div>
 </section>

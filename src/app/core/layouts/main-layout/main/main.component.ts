@@ -1,10 +1,10 @@
-import { Component, DoCheck, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { SidebarButtonComponent } from "../../../../shared/components/UI/sidebar-button/sidebar-button.component";
-import { SidebarComponent } from "../../../pages/sidebar/sidebar.component";
 import { Subscription } from 'rxjs';
 import { AuthApiService } from '../../../../../../projects/auth-api/src/public-api';
+import { SidebarButtonComponent } from "../../../../shared/components/UI/sidebar-button/sidebar-button.component";
+import { SidebarComponent } from "../../../pages/sidebar/sidebar.component";
 
 @Component({
   selector: 'app-main',
@@ -18,6 +18,7 @@ export class MainComponent implements OnInit , OnDestroy{
   private readonly _AuthApiService = inject(AuthApiService);
 
   routerEventID !:Subscription;
+  logoutID !:Subscription;
 
   currentUrl: string = '';
 
@@ -31,17 +32,17 @@ export class MainComponent implements OnInit , OnDestroy{
   }
 
   logOut(){
-    this._AuthApiService.logOut().subscribe({
+    this.logoutID = this._AuthApiService.logOut().subscribe({
       next:(res)=>{
-        console.log(res)
+        sessionStorage.clear()
+        this._Router.navigate(['/signin']);
+        //this._Store.select('token')
       }
     })
-    sessionStorage.clear()
-    //this._Store.select('token')
-    this._Router.navigate(['/signin']);
   }
 
   ngOnDestroy(): void {
     this.routerEventID?.unsubscribe();
+    this.logoutID?.unsubscribe();
   }
 }

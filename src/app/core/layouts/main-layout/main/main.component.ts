@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { SidebarButtonComponent } from "../../../../shared/components/UI/sidebar-button/sidebar-button.component";
 import { SidebarComponent } from "../../../pages/sidebar/sidebar.component";
 import { Subscription } from 'rxjs';
+import { AuthApiService } from '../../../../../../projects/auth-api/src/public-api';
 
 @Component({
   selector: 'app-main',
@@ -14,6 +15,7 @@ import { Subscription } from 'rxjs';
 export class MainComponent implements OnInit , OnDestroy{
   private readonly _Store = inject(Store);
   private readonly _Router = inject(Router);
+  private readonly _AuthApiService = inject(AuthApiService);
 
   routerEventID !:Subscription;
 
@@ -29,6 +31,11 @@ export class MainComponent implements OnInit , OnDestroy{
   }
 
   logOut(){
+    this._AuthApiService.logOut().subscribe({
+      next:(res)=>{
+        console.log(res)
+      }
+    })
     sessionStorage.clear()
     //this._Store.select('token')
     this._Router.navigate(['/signin']);

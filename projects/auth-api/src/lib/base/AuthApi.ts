@@ -4,6 +4,7 @@ import { ISigninData } from "../interface/isignin-data";
 import { ISignupData } from "../interface/isignup-data";
 import { AdaptorResponse } from "../interface/isignup-response";
 import { IResetPassword } from "../interface/ireset-password";
+import { LogoutRes } from "../interface/logout";
 
 export abstract class AuthApi {
     
@@ -11,5 +12,6 @@ export abstract class AuthApi {
     abstract Signin (data:ISigninData):Observable<AdaptorResponse> ;
     abstract ForgotPassword (data:IForgotPasswordData):Observable<any> ;
     abstract verifyResetCode(code:string):Observable<any>;
-    abstract  resetPassword(data:IResetPassword):Observable<any>
+    abstract  resetPassword(data:IResetPassword):Observable<any>;
+    abstract logOut():Observable<LogoutRes>;
 }

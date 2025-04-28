@@ -22,7 +22,7 @@
         }
     </div>
 
-    <div [class.hidden]="showModal() == false || closeModal() == true"
+    <div [class.hidden]="showModal() == false || closeModal() == true" 
         class="modal h-screen fixed inset-0 z-50 flex justify-center items-center">
         <div [class.hidden]="start() == true"
             class="h-[19.3125rem] bg-white rounded-[1.25rem] myShadow p-6 grid gap-12">
@@ -37,13 +37,13 @@
                     </ul>
                 </div>
             </div>
-            <button type="button" (click)="startExam()"
+            <button type="button" (click)="startExam()" 
                 class="text-white main-bg hover:bg-blue-800 font-medium text-base align-middle text-center  h-12 rounded-full">start</button>
         </div>
-        <app-exam-modal [e_id]="exam_id()" [class.hidden]="start() == false"></app-exam-modal>
+        <app-exam-modal [e_id]="exam_id" [class.hidden]="start() == false"></app-exam-modal>
     </div>
     }
-    @if (examsOnSub.length == 0) {
+    @if (examsOnSub?.length == 0) {
     <div class="flex justify-center items-center">
         <h1 class="font-semibold">There is no exams available on this subject</h1>
     </div>

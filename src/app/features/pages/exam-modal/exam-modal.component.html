@@ -1,4 +1,4 @@
-<div class="w-[29.375rem] bg-white rounded-[1.25rem] myShadow p-6 grid gap-12"
+<div class="w-[29.375rem] bg-white rounded-[1.25rem] myShadow p-6 grid gap-12 overflow-hidden"
     [class]="showScore() == false && score ? 'md:w-[48.5rem]' : 'md:w-[42.875rem]'">
 
         <!-- exam -->
@@ -30,7 +30,7 @@
                 }
             </div>
         </div>
-        <div [@next]="getQuestionState()" class="grid gap-6 ">
+        <div [@next]="getQuestionState()" class="grid gap-6">
             <h3 class="font-medium text-lg md:text-2xl">{{questionsOnExam[index].question}}</h3>
             <div class="grid gap-4">
                 @for (answer of questionsOnExam[index].answers; track $index) {

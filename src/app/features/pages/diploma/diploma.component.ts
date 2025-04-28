@@ -19,9 +19,9 @@ export class DiplomaComponent implements OnInit, OnDestroy {
 
   closeModal = computed(() => this._QuestionService.closeModal());
   
-  examsOnSub !: Exam[];
+  examsOnSub : Exam[] = [] as Exam[];
   subject_id !: string;
-  exam_id : WritableSignal<string> = signal('');
+  exam_id !: string;
   showModal: WritableSignal<boolean> = signal(false);
   start: WritableSignal<boolean> = signal(false);
   examsOnSubjectID !: Subscription;
@@ -46,8 +46,14 @@ export class DiplomaComponent implements OnInit, OnDestroy {
   }
 
   showInstructions(e_id:string) {
+    console.log('e_id' , e_id);
     this.showModal.update((value) => value = true);
-    this.exam_id.set(e_id);
+    this.exam_id = e_id;
+    console.log('exam_id' , this.exam_id)
+  }
+
+  Exit(){
+    this.showModal.set(false);
   }
 
   startExam() {

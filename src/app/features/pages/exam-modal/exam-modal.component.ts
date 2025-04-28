@@ -1,5 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, inject, input, InputSignal, OnDestroy, OnInit, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
+import { Component, inject, input, InputSignal, OnChanges, OnDestroy, OnInit, PLATFORM_ID, signal, SimpleChanges, WritableSignal } from '@angular/core';
 import { Chart, ChartData, ChartType, registerables } from 'chart.js';
 import { Subscription } from 'rxjs';
 import { Answer, ScoreAdaptorRes } from '../../interfaces/Questions/check-question-interface';
@@ -36,7 +36,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
     ])
   ]
 })
-export class ExamModalComponent implements OnInit, OnDestroy {
+export class ExamModalComponent implements OnDestroy , OnChanges {
   private readonly _QuestionService = inject(QuestionService);
   private readonly platformId = inject(PLATFORM_ID);
   isBrowser = isPlatformBrowser(this.platformId);
@@ -67,25 +67,26 @@ export class ExamModalComponent implements OnInit, OnDestroy {
     Chart.register(...registerables);
   }
 
-  ngOnInit(): void {
-    this.startExam();
-
-    let intervalId = setInterval(() => {
-      if (this.seconds === 0) {
-        this.minutes = this.minutes - 1;
-        this.seconds = 59;
-      } else {
-        this.seconds = this.seconds - 1;
-      }
-      if (this.minutes === 0) {
-        clearInterval(intervalId);
-        this.submit();
-      }
-    }, 1000)
-
+  ngOnChanges(changes: SimpleChanges): void {
+    if(this.e_id != undefined){
+      this.startExam()
+      let intervalId = setInterval(() => {
+        if (this.seconds === 0) {
+          this.minutes = this.minutes - 1;
+          this.seconds = 59;
+        } else {
+          this.seconds = this.seconds - 1;
+        }
+        if (this.minutes === 0) {
+          clearInterval(intervalId);
+          this.submit();
+        }
+      }, 1000)
+    }
   }
 
   startExam() {
+    console.log('id',this.e_id())
     this.allQuestionsOnExamID = this._QuestionService.getAllQuestionsOnExam(this.e_id()).subscribe({
       next: (res) => {
         this.questionsOnExam = res.questions;
@@ -169,7 +170,7 @@ export class ExamModalComponent implements OnInit, OnDestroy {
   }
 
   close(){
-    this._QuestionService.closeModal.set(true)
+    this._QuestionService.closeModal.set(true);
   }
 
   ngOnDestroy(): void {

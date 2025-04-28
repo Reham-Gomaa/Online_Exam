@@ -16,6 +16,8 @@ import { AdaptorResponse } from './interface/isignup-response';
 import { IVerifyCodeRes } from './interface/iverify-code-res';
 import { ResetPasswordِAdaptorRes } from './interface/reset-password-res';
 import { Base_Url } from './token/BaseUrl.token';
+import { LogoutRes } from './interface/logout';
+import { LogoutAdaptorService } from './adaptor/logout-adaptor.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +30,7 @@ export class AuthApiService implements AuthApi{
   private readonly _ForgotPasswordAdaptorService = inject(ForgotPasswordAdaptorService);
   private readonly _VerifyCodeAdaptorService = inject(VerifyCodeAdaptorService);
   private readonly _ResetPasswordAdaptorService = inject(ResetPasswordAdaptorService);
+  private readonly _LogoutAdaptorService = inject(LogoutAdaptorService);
 
   constructor() { }
 
@@ -60,6 +63,12 @@ export class AuthApiService implements AuthApi{
   resetPassword(data:IResetPassword):Observable<ResetPasswordِAdaptorRes>{
     return this._HttpClient.put( this._Base_Url+AuthEndPoint.RESET_PASSWORD , data).pipe(
       map( (res:any)=> this._ResetPasswordAdaptorService.adapt(res) )
+    )
+  }
+
+  logOut():Observable<LogoutRes>{
+    return this._HttpClient.get( this._Base_Url + AuthEndPoint.LOG_OUT ).pipe(
+      map( (res:any)=> this._LogoutAdaptorService.adapt(res) )
     )
   }
 

@@ -59,6 +59,8 @@ export class ExamModalComponent implements OnDestroy {
   direction : 'next' | 'back' = 'next';
   @Output() closed = new EventEmitter<void>();
   loading :boolean = false;
+  // dotBlue : boolean = false;
+  dots :string[] = [] as string[];
 
   doughnutChartData: ChartData<'doughnut'> | undefined;
   doughnutChartType: ChartType = 'doughnut';
@@ -120,6 +122,9 @@ export class ExamModalComponent implements OnDestroy {
     return this.answers.some(answer => answer.questionId === q_id && answer.correct === key);
   }
 
+  checkDots(q_id: string): boolean {
+    return this.dots.some(dot => dot === q_id);
+  }
   check(q_id: string): boolean {
     return this.answers.some(answer => answer.questionId === q_id);
   }
@@ -137,8 +142,11 @@ export class ExamModalComponent implements OnDestroy {
 
   nextQuestion() {
     if (this.index < this.questionsOnExam.length - 1) {
+      this.dots.push(this.questionsOnExam[this.index]._id)
+      console.log(this.dots)
       this.index++;
       this.direction = 'next';
+      // this.dotBlue = true;
     } else {
       this.index = 0;
       this.submit();
@@ -147,8 +155,10 @@ export class ExamModalComponent implements OnDestroy {
   }
   previousQuestion() {
     if (this.index > 0) {
+      this.dots.pop();
       this.index--;
       this.direction = 'back';
+      // this.dotBlue = false;
     }
   }
 

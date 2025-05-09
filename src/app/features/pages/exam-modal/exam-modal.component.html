@@ -23,11 +23,8 @@
                 </div>
             </div>
             <div class="flex justify-between items-center">
-                @for (dot of questionsOnExam; track dot._id) {
-                <div class="w-[.625rem] h-[.625rem] rounded-full" [class]="{
-                        'dot': !checkDots(questionsOnExam[index]._id),
-                        'main-bg': checkDots(questionsOnExam[index]._id),
-                    }"></div>
+                @for (dot of questionsOnExam; track $index) {
+                <div class="w-[.625rem] h-[.625rem] rounded-full" [class]="$index <= index ? 'main-bg' : 'dot'"></div>
                 }
             </div>
         </div>

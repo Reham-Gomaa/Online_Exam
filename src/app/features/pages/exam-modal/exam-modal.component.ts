@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { isPlatformBrowser } from '@angular/common';
-import { Component, effect, EffectRef, EventEmitter, inject, input, InputSignal, OnDestroy, OnInit, Output, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
+import { Component, effect, EffectRef, EventEmitter, inject, input, InputSignal, OnChanges, OnDestroy, OnInit, Output, PLATFORM_ID, signal, SimpleChanges, WritableSignal } from '@angular/core';
 import { Chart, ChartData, ChartType, registerables } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { Subscription } from 'rxjs';
@@ -36,7 +36,7 @@ import { QuestionService } from '../../services/Questions/question.service';
     ])
   ]
 })
-export class ExamModalComponent implements OnDestroy {
+export class ExamModalComponent implements OnDestroy  {
   private readonly _QuestionService = inject(QuestionService);
   private readonly platformId = inject(PLATFORM_ID);
   isBrowser = isPlatformBrowser(this.platformId);
@@ -59,8 +59,6 @@ export class ExamModalComponent implements OnDestroy {
   direction : 'next' | 'back' = 'next';
   @Output() closed = new EventEmitter<void>();
   loading :boolean = false;
-  // dotBlue : boolean = false;
-  dots :string[] = [] as string[];
 
   doughnutChartData: ChartData<'doughnut'> | undefined;
   doughnutChartType: ChartType = 'doughnut';
@@ -77,10 +75,13 @@ export class ExamModalComponent implements OnDestroy {
       }
     } )
   }
+
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   this.startExam();
+  // }
   
   startExam() {
     this.loading = true;
-    console.log('id',this.e_id())
     this.allQuestionsOnExamID = this._QuestionService.getAllQuestionsOnExam(this.e_id()).subscribe({
       next: (res) => {
         this.loading = false;
@@ -121,19 +122,13 @@ export class ExamModalComponent implements OnDestroy {
   isSelected(q_id: string, key: string): boolean {
     return this.answers.some(answer => answer.questionId === q_id && answer.correct === key);
   }
-
-  checkDots(q_id: string): boolean {
-    return this.dots.some(dot => dot === q_id);
-  }
   check(q_id: string): boolean {
     return this.answers.some(answer => answer.questionId === q_id);
   }
 
   answersMap(q_id: string): string {
-    // let index = this.answers.findIndex((q) => q.questionId == q_id);
-    // return this.answers[index].correct;
-    const answer = this.answers.find((q) => q.questionId === q_id);
-    return answer?.correct ?? '';
+    let index = this.answers.findIndex((q) => q.questionId == q_id);
+    return this.answers[index].correct;
   }
 
   getQuestionState(): string {
@@ -142,11 +137,8 @@ export class ExamModalComponent implements OnDestroy {
 
   nextQuestion() {
     if (this.index < this.questionsOnExam.length - 1) {
-      this.dots.push(this.questionsOnExam[this.index]._id)
-      console.log(this.dots)
       this.index++;
       this.direction = 'next';
-      // this.dotBlue = true;
     } else {
       this.index = 0;
       this.submit();
@@ -155,10 +147,8 @@ export class ExamModalComponent implements OnDestroy {
   }
   previousQuestion() {
     if (this.index > 0) {
-      this.dots.pop();
       this.index--;
       this.direction = 'back';
-      // this.dotBlue = false;
     }
   }
 
@@ -192,8 +182,10 @@ export class ExamModalComponent implements OnDestroy {
 
   close(){
     this._QuestionService.closeModal.set(true);
+    // this.score = {} as ScoreAdaptorRes;
+    // this.showScore.set(false);
+    // this.answers = [];
     this.closed.emit();
-    
   }
 
   ngOnDestroy(): void {

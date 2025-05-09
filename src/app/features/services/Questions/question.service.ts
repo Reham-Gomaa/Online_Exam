@@ -3,7 +3,7 @@ import { QuestionApi } from '../../base/Questions/questions.abstract';
 import { map, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { QuestionEndpoint } from '../../enums/Question/question.endpoints';
-import { IQuestionsOnExamAdaptorRes, IQuestionsOnExamRes } from '../../interfaces/Questions/iquestions-on-exam-res';
+import { IQuestionsOnExamAdaptorRes, IQuestionsOnExamRes, Question } from '../../interfaces/Questions/iquestions-on-exam-res';
 import { QuestionOnExamAdaptorService } from '../../adaptors/Questions/question-on-exam-adaptor.service';
 import { Base_Url } from '../../../../../projects/auth-api/src/public-api';
 import { CheckQuestionInterface, CheckQuestionRes, ScoreAdaptorRes } from '../../interfaces/Questions/check-question-interface';
@@ -16,6 +16,7 @@ export class QuestionService implements QuestionApi {
   constructor() { }
 
   closeModal :WritableSignal<boolean> = signal(false);
+  questionsOnExam : Question[] = [] as Question[];
 
   private readonly _HttpClient = inject(HttpClient);
   private readonly _Base_Url = inject(Base_Url);

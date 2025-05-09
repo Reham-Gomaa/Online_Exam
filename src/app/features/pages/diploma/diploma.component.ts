@@ -47,21 +47,26 @@ export class DiplomaComponent implements OnInit, OnDestroy {
   }
 
   showInstructions(e_id:string) {
-    console.log('e_id' , e_id);
     this.exam_id = '';
-    this.showModal.update((value) => value = true);
+    this.showModal.set(true);
+    this._QuestionService.closeModal.set(false);
     this.exam_id = e_id;
-    console.log('exam_id' , this.exam_id)
+    // setTimeout(() => {
+    //   this.exam_id = e_id;
+    //   this.showModal.set(true);
+    //   this._QuestionService.closeModal.set(false);
+    //   console.log('exam_id', this.exam_id);
+    // }, 1000);
+  }
+
+  startExam() {
+    this.start.set(true);
+    this.examStartSignal.set(true);
   }
 
   Exit(){
     this.showModal.set(false);
     this.exam_id = '';
-  }
-
-  startExam() {
-    this.start.update((value) => value = true);
-    this.examStartSignal.set(true);
   }
 
   ngOnDestroy(): void {
